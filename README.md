@@ -21,10 +21,10 @@ yarn add siopa
 import { Siopa } from "siopa";
 
 const client = new Siopa({
-    rootUrl: "/",
-    currencyCode: "USD",
-    locale: "en",
-    countryCode: "US",
+  rootUrl: "/",
+  currencyCode: "USD",
+  locale: "en",
+  countryCode: "US",
 });
 ```
 
@@ -47,7 +47,7 @@ Fetch a single product by its handle.
 const result = await client.getProduct({ handle: "classic-leather-jacket" });
 
 if (result.ok) {
-    console.log(result.data.title);
+  console.log(result.data.title);
 }
 ```
 
@@ -59,7 +59,7 @@ Retrieve the current cart.
 const result = await client.getCart();
 
 if (result.ok) {
-    console.log(result.data.item_count);
+  console.log(result.data.item_count);
 }
 ```
 
@@ -69,7 +69,7 @@ Add one or more items to the cart.
 
 ```ts
 const result = await client.addToCart({
-    items: [{ id: 44871526007089, quantity: 1 }],
+  items: [{ id: 44871526007089, quantity: 1 }],
 });
 ```
 
@@ -77,14 +77,14 @@ You can also include optional `selling_plan` and `properties`:
 
 ```ts
 const result = await client.addToCart({
-    items: [
-        {
-            id: 44871526007089,
-            quantity: 1,
-            selling_plan: 123456,
-            properties: { _gift_message: "Happy birthday!" },
-        },
-    ],
+  items: [
+    {
+      id: 44871526007089,
+      quantity: 1,
+      selling_plan: 123456,
+      properties: { _gift_message: "Happy birthday!" },
+    },
+  ],
 });
 ```
 
@@ -94,8 +94,8 @@ Update the quantity (or properties) of a line item by its key.
 
 ```ts
 const result = await client.updateLineItem({
-    id: "c32b1a8b-1c5e-4e3a-9f8d-2a6b7c8d9e0f:1234567890",
-    quantity: 3,
+  id: "c32b1a8b-1c5e-4e3a-9f8d-2a6b7c8d9e0f:1234567890",
+  quantity: 3,
 });
 ```
 
@@ -105,7 +105,7 @@ Remove a single line item from the cart by its key.
 
 ```ts
 const result = await client.removeLineItem({
-    id: "c32b1a8b-1c5e-4e3a-9f8d-2a6b7c8d9e0f:1234567890",
+  id: "c32b1a8b-1c5e-4e3a-9f8d-2a6b7c8d9e0f:1234567890",
 });
 ```
 
@@ -115,10 +115,10 @@ Remove multiple line items from the cart at once.
 
 ```ts
 const result = await client.removeLineItems({
-    ids: [
-        "c32b1a8b-1c5e-4e3a-9f8d-2a6b7c8d9e0f:1234567890",
-        "a21c3b4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d:0987654321",
-    ],
+  ids: [
+    "c32b1a8b-1c5e-4e3a-9f8d-2a6b7c8d9e0f:1234567890",
+    "a21c3b4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d:0987654321",
+  ],
 });
 ```
 
@@ -136,7 +136,7 @@ Fetch product recommendations for a given product.
 
 ```ts
 const result = await client.getProductRecommendations({
-    product_id: "8057088139569",
+  product_id: "8057088139569",
 });
 ```
 
@@ -148,9 +148,9 @@ const result = await client.getProductRecommendations({
 
 ```ts
 const result = await client.getProductRecommendations({
-    product_id: "8057088139569",
-    limit: 8,
-    intent: "complementary",
+  product_id: "8057088139569",
+  limit: 8,
+  intent: "complementary",
 });
 ```
 
@@ -162,8 +162,8 @@ Perform a predictive search across products, collections, pages, articles, and q
 const result = await client.searchProducts({ q: "leather" });
 
 if (result.ok) {
-    const { resources } = result.data;
-    console.log(resources);
+  const { resources } = result.data;
+  console.log(resources);
 }
 ```
 
@@ -171,16 +171,16 @@ With full options:
 
 ```ts
 const result = await client.searchProducts({
-    q: "leather",
-    resources: {
-        type: ["product", "collection"],
-        limit: 5,
-        limit_scope: "each",
-        options: {
-            unavailable_products: "hide",
-            fields: ["title", "vendor", "variants.title"],
-        },
+  q: "leather",
+  resources: {
+    type: ["product", "collection"],
+    limit: 5,
+    limit_scope: "each",
+    options: {
+      unavailable_products: "hide",
+      fields: ["title", "vendor", "variants.title"],
     },
+  },
 });
 ```
 
@@ -204,10 +204,10 @@ client.formatPrice({ amount: 1999 });
 
 ```ts
 const client = new Siopa({
-    rootUrl: "/",
-    currencyCode: "EUR",
-    locale: "de",
-    countryCode: "DE",
+  rootUrl: "/",
+  currencyCode: "EUR",
+  locale: "de",
+  countryCode: "DE",
 });
 
 client.formatPrice({ amount: 4950 });
@@ -220,7 +220,7 @@ client.formatPrice({ amount: 4950 });
 
 ```ts
 const unsubscribe = client.on("cart:fetched", (cart) => {
-    console.log("Cart updated:", cart.item_count);
+  console.log("Cart updated:", cart.item_count);
 });
 
 // Later, stop listening
@@ -248,9 +248,9 @@ All methods return `ApiResult<T>`, a discriminated union:
 type ApiResult<T> = { ok: true; data: T } | { ok: false; error: ErrorResponse };
 
 type ErrorResponse = {
-    status: number;
-    message: string;
-    description: string;
+  status: number;
+  message: string;
+  description: string;
 };
 ```
 
@@ -258,13 +258,13 @@ Narrow the result with a simple `if` check:
 
 ```ts
 const result = await client.addToCart({
-    items: [{ id: 44871526007089, quantity: 1 }],
+  items: [{ id: 44871526007089, quantity: 1 }],
 });
 
 if (result.ok) {
-    console.log("Added:", result.data);
+  console.log("Added:", result.data);
 } else {
-    console.error(`Error ${result.error.status}: ${result.error.message}`);
+  console.error(`Error ${result.error.status}: ${result.error.message}`);
 }
 ```
 
@@ -272,7 +272,7 @@ You can also listen for all errors globally:
 
 ```ts
 client.on("request:error", (error) => {
-    console.error(`[${error.status}] ${error.message}: ${error.description}`);
+  console.error(`[${error.status}] ${error.message}: ${error.description}`);
 });
 ```
 
@@ -282,14 +282,14 @@ All types are exported from the package entry point:
 
 ```ts
 import type {
-    ApiResult,
-    ErrorResponse,
-    ShopifyEventMap,
-    AddPayload,
-    LineItemPayload,
-    PredictiveSearchPayload,
-    PredictiveSearchResourceType,
-    PredictiveSearchField,
+  ApiResult,
+  ErrorResponse,
+  ShopifyEventMap,
+  AddPayload,
+  LineItemPayload,
+  PredictiveSearchPayload,
+  PredictiveSearchResourceType,
+  PredictiveSearchField,
 } from "siopa";
 ```
 

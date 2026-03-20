@@ -1,45 +1,45 @@
 {
-    "name": "siopa",
-    "version": "1.0.0",
-    "description": "A typed client for the Shopify Storefront Ajax API",
-    "keywords": [
-        "shopify",
-        "cart",
-        "storefront",
-        "ajax-api",
-        "typescript"
-    ],
-    "type": "module",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "tsc",
-        "lint": "oxlint",
-        "lint:fix": "oxlint --fix",
-        "fmt": "oxfmt",
-        "fmt:check": "oxfmt --check",
-        "prepublishOnly": "pnpm run build"
-    },
-    "files": [
-        "dist/**/*"
-    ],
-    "exports": {
-        ".": {
-            "types": "./dist/index.d.ts",
-            "import": "./dist/index.js"
-        }
-    },
-    "sideEffects": false,
-    "author": "Warren Haskins",
-    "license": "MIT",
-    "dependencies": {
-        "@grafikr/shopify-typescript": "^2.5.0"
-    },
-    "devDependencies": {
-        "typescript": "^5.9.3",
-        "@total-typescript/tsconfig": "^1.0.4",
-        "oxfmt": "^0.41.0",
-        "oxlint": "^1.56.0"
+  "name": "siopa",
+  "version": "1.0.0",
+  "description": "A typed client for the Shopify Storefront Ajax API",
+  "keywords": [
+    "ajax-api",
+    "cart",
+    "shopify",
+    "storefront",
+    "typescript"
+  ],
+  "license": "MIT",
+  "author": "Warren Haskins",
+  "files": [
+    "dist/**/*"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+    "prepublishOnly": "pnpm run build"
+  },
+  "dependencies": {
+    "@grafikr/shopify-typescript": "^2.5.0"
+  },
+  "devDependencies": {
+    "@total-typescript/tsconfig": "^1.0.4",
+    "oxfmt": "^0.41.0",
+    "oxlint": "^1.56.0",
+    "typescript": "^5.9.3"
+  }
 }
