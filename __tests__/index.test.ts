@@ -191,9 +191,7 @@ describe("Siopa", () => {
       await vi.waitFor(() => expect(warnSpy).toHaveBeenCalled());
 
       expect(callCount).toBeLessThanOrEqual(10);
-      expect(warnSpy).toHaveBeenCalledWith(
-        expect.stringContaining("Maximum event depth"),
-      );
+      expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining("Maximum event depth"));
 
       warnSpy.mockRestore();
     });

@@ -286,17 +286,17 @@ client.removeAllListeners();
 
 ### Available events
 
-| Event                             | Payload Type        | Fired by                              |
-| --------------------------------- | ------------------- | ------------------------------------- |
-| `product:fetched`                 | `Product`           | `getProduct`                          |
-| `product:recommendations:fetched` | `Recommendations`   | `getProductRecommendations`           |
-| `cart:fetched`                    | `Cart`              | `getCart`                             |
-| `cart:added`                      | `CartAdd`           | `addToCart`                           |
-| `cart:changed`                    | `CartChange`        | `updateLineItem`                      |
-| `cart:removed`                    | `CartChange`        | `removeLineItem`, `removeLineItems`   |
-| `cart:cleared`                    | `CartClear`         | `clearCart`                           |
-| `search:suggested`                | `Suggest`           | `searchProducts`                      |
-| `request:failed`                  | `RequestFailedEvent`| Any method on failure                 |
+| Event                             | Payload Type         | Fired by                            |
+| --------------------------------- | -------------------- | ----------------------------------- |
+| `product:fetched`                 | `Product`            | `getProduct`                        |
+| `product:recommendations:fetched` | `Recommendations`    | `getProductRecommendations`         |
+| `cart:fetched`                    | `Cart`               | `getCart`                           |
+| `cart:added`                      | `CartAdd`            | `addToCart`                         |
+| `cart:changed`                    | `CartChange`         | `updateLineItem`                    |
+| `cart:removed`                    | `CartChange`         | `removeLineItem`, `removeLineItems` |
+| `cart:cleared`                    | `CartClear`          | `clearCart`                         |
+| `search:suggested`                | `Suggest`            | `searchProducts`                    |
+| `request:failed`                  | `RequestFailedEvent` | Any method on failure               |
 
 The `request:failed` payload extends `ErrorResponse` with a `source` field indicating which operation failed:
 
