@@ -21,27 +21,34 @@ export type ErrorResponse = {
   description: string;
 };
 
+export type RequestFailedEvent = ErrorResponse & {
+  source: Exclude<keyof ShopifyEventMap, "request:failed">;
+};
+
 export type ApiResult<T> = { ok: true; data: T } | { ok: false; error: ErrorResponse };
 
 export type ShopifyEventMap = {
   "product:fetched": Product;
   "product:recommendations:fetched": Recommendations;
   "cart:fetched": Cart;
-  "cart:updated": CartChange;
+  "cart:added": CartAdd;
+  "cart:changed": CartChange;
+  "cart:removed": CartChange;
   "cart:cleared": CartClear;
-  "product:added": CartAdd;
-  "search:suggest": Suggest;
-  "request:error": ErrorResponse;
+  "search:suggested": Suggest;
+  "request:failed": RequestFailedEvent;
 };
 
-export type AddPayload = {
-  items: {
-    quantity: number;
-    id: number;
-    selling_plan?: number;
-    properties?: Record<string, string>;
-  }[];
-};
+export type AddPayload =
+  | {
+      items: {
+        quantity: number;
+        id: number;
+        selling_plan?: number;
+        properties?: Record<string, string>;
+      }[];
+    }
+  | FormData;
 
 export type LineItemPayload = {
   id: string;
@@ -77,7 +84,9 @@ export type PredictiveSearchPayload = {
 };
 
 export class Siopa {
-  private _listeners = new Map<string, Set<Function>>();
+  private _listeners = new Map<keyof ShopifyEventMap, Set<(data: any) => void>>();
+  private _emitCounts = new Map<keyof ShopifyEventMap, number>();
+  private static MAX_EMIT_DEPTH = 10;
 
   private cartUrl: string;
   private addUrl: string;
@@ -110,7 +119,7 @@ export class Siopa {
 
   /*
     |--------------------------------------------------
-    | on 
+    | on
     |--------------------------------------------------
     */
 
@@ -122,10 +131,40 @@ export class Siopa {
       this._listeners.set(event, new Set());
     }
     this._listeners.get(event)!.add(callback);
-    // Return an unsubscribe function
     return () => {
       this._listeners.get(event)?.delete(callback);
     };
+  }
+
+  /*
+    |--------------------------------------------------
+    | once
+    |--------------------------------------------------
+    */
+
+  once<K extends keyof ShopifyEventMap>(
+    event: K,
+    callback: (data: ShopifyEventMap[K]) => void,
+  ): () => void {
+    const unsub = this.on(event, (data) => {
+      unsub();
+      callback(data);
+    });
+    return unsub;
+  }
+
+  /*
+    |--------------------------------------------------
+    | removeAllListeners
+    |--------------------------------------------------
+    */
+
+  removeAllListeners(event?: keyof ShopifyEventMap): void {
+    if (event) {
+      this._listeners.delete(event);
+    } else {
+      this._listeners.clear();
+    }
   }
 
   /*
@@ -135,7 +174,28 @@ export class Siopa {
     */
 
   private _emit<K extends keyof ShopifyEventMap>(event: K, data: ShopifyEventMap[K]) {
-    this._listeners.get(event)?.forEach((cb) => cb(data));
+    const count = (this._emitCounts.get(event) ?? 0) + 1;
+    this._emitCounts.set(event, count);
+
+    if (count === 1) {
+      setTimeout(() => this._emitCounts.delete(event), 0);
+    }
+
+    if (count > Siopa.MAX_EMIT_DEPTH) {
+      console.warn(
+        `[Siopa] Maximum event depth (${Siopa.MAX_EMIT_DEPTH}) reached for "${event}". ` +
+          `Possible infinite loop — skipping emission.`,
+      );
+      return;
+    }
+
+    this._listeners.get(event)?.forEach((cb) => {
+      try {
+        cb(data);
+      } catch (err) {
+        console.error(`[Siopa] Listener error on "${event}":`, err);
+      }
+    });
   }
 
   /*
@@ -152,7 +212,7 @@ export class Siopa {
     if (result.ok) {
       this._emit("product:fetched", result.data);
     } else {
-      this._emit("request:error", result.error);
+      this._emit("request:failed", { ...result.error, source: "product:fetched" });
     }
     return result;
   }
@@ -163,7 +223,7 @@ export class Siopa {
     |--------------------------------------------------
     */
 
-  async addToCart(payload: AddPayload) {
+  async addToCart({ payload }: { payload: AddPayload }) {
     const result = await this._APIRequest<CartAdd, AddPayload>({
       url: this.addUrl,
       payload,
@@ -171,9 +231,9 @@ export class Siopa {
     });
 
     if (result.ok) {
-      this._emit("product:added", result.data);
+      this._emit("cart:added", result.data);
     } else {
-      this._emit("request:error", result.error);
+      this._emit("request:failed", { ...result.error, source: "cart:added" });
     }
 
     return result;
@@ -193,7 +253,7 @@ export class Siopa {
     if (result.ok) {
       this._emit("cart:fetched", result.data);
     } else {
-      this._emit("request:error", result.error);
+      this._emit("request:failed", { ...result.error, source: "cart:fetched" });
     }
     return result;
   }
@@ -212,9 +272,9 @@ export class Siopa {
     });
 
     if (result.ok) {
-      this._emit("cart:updated", result.data);
+      this._emit("cart:changed", result.data);
     } else {
-      this._emit("request:error", result.error);
+      this._emit("request:failed", { ...result.error, source: "cart:changed" });
     }
 
     return result;
@@ -233,9 +293,9 @@ export class Siopa {
       options: { method: "POST" },
     });
     if (result.ok) {
-      this._emit("cart:updated", result.data);
+      this._emit("cart:removed", result.data);
     } else {
-      this._emit("request:error", result.error);
+      this._emit("request:failed", { ...result.error, source: "cart:removed" });
     }
     return result;
   }
@@ -262,9 +322,9 @@ export class Siopa {
     });
 
     if (result.ok) {
-      this._emit("cart:updated", result.data);
+      this._emit("cart:removed", result.data);
     } else {
-      this._emit("request:error", result.error);
+      this._emit("request:failed", { ...result.error, source: "cart:removed" });
     }
 
     return result;
@@ -285,7 +345,7 @@ export class Siopa {
     if (result.ok) {
       this._emit("cart:cleared", result.data);
     } else {
-      this._emit("request:error", result.error);
+      this._emit("request:failed", { ...result.error, source: "cart:cleared" });
     }
     return result;
   }
@@ -315,7 +375,7 @@ export class Siopa {
     if (result.ok) {
       this._emit("product:recommendations:fetched", result.data);
     } else {
-      this._emit("request:error", result.error);
+      this._emit("request:failed", { ...result.error, source: "product:recommendations:fetched" });
     }
 
     return result;
@@ -357,9 +417,9 @@ export class Siopa {
     });
 
     if (result.ok) {
-      this._emit("search:suggest", result.data);
+      this._emit("search:suggested", result.data);
     } else {
-      this._emit("request:error", result.error);
+      this._emit("request:failed", { ...result.error, source: "search:suggested" });
     }
 
     return result;
@@ -381,11 +441,18 @@ export class Siopa {
     options?: RequestInit;
   }): Promise<ApiResult<T>> {
     let fetched: Response;
+
+    const headers = payload
+      ? payload instanceof FormData
+        ? undefined
+        : { "Content-Type": "application/json" }
+      : undefined;
+
     try {
       fetched = await fetch(url, {
         ...options,
-        headers: payload ? { "Content-Type": "application/json" } : undefined,
-        body: payload ? JSON.stringify(payload) : undefined,
+        headers,
+        body: payload instanceof FormData ? payload : JSON.stringify(payload),
       });
     } catch (e) {
       return {

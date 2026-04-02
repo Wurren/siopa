@@ -25,13 +25,13 @@
     }
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "pnpm run build",
+    "test": "vitest"
   },
   "dependencies": {
     "@grafikr/shopify-typescript": "^2.5.0"
@@ -40,6 +40,7 @@
     "@total-typescript/tsconfig": "^1.0.4",
     "oxfmt": "^0.41.0",
     "oxlint": "^1.56.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.0"
   }
 }

@@ -1,4 +1,16 @@
-# siopa
+```
+          $$\
+          \__|
+ $$$$$$$\ $$\  $$$$$$\   $$$$$$\   $$$$$$\
+$$  _____|$$ |$$  __$$\ $$  __$$\  \____$$\
+\$$$$$$\  $$ |$$ /  $$ |$$ /  $$ | $$$$$$$ |
+ \____$$\ $$ |$$ |  $$ |$$ |  $$ |$$  __$$ |
+$$$$$$$  |$$ |\$$$$$$  |$$$$$$$  |\$$$$$$$ |
+\_______/ \__| \______/ $$  ____/  \_______|
+                        $$ |
+                        $$ |
+                        \__|
+```
 
 A lightweight, fully-typed TypeScript wrapper around Shopify's [Storefront Ajax API](https://shopify.dev/docs/api/ajax) for use in Shopify themes.
 
@@ -22,9 +34,9 @@ import { Siopa } from "siopa";
 
 const client = new Siopa({
   rootUrl: "/",
-  currencyCode: "USD",
+  currencyCode: "EUR",
   locale: "en",
-  countryCode: "US",
+  countryCode: "IE",
 });
 ```
 
@@ -65,11 +77,13 @@ if (result.ok) {
 
 ### `addToCart`
 
-Add one or more items to the cart.
+Add one or more items to the cart. Accepts either a plain object or a `FormData` instance.
+
+**Object payload:**
 
 ```ts
 const result = await client.addToCart({
-  items: [{ id: 44871526007089, quantity: 1 }],
+  payload: { items: [{ id: 44871526007089, quantity: 1 }] },
 });
 ```
 
@@ -77,16 +91,29 @@ You can also include optional `selling_plan` and `properties`:
 
 ```ts
 const result = await client.addToCart({
-  items: [
-    {
-      id: 44871526007089,
-      quantity: 1,
-      selling_plan: 123456,
-      properties: { _gift_message: "Happy birthday!" },
-    },
-  ],
+  payload: {
+    items: [
+      {
+        id: 44871526007089,
+        quantity: 1,
+        selling_plan: 123456,
+        properties: { _gift_message: "Happy birthday!" },
+      },
+    ],
+  },
 });
 ```
+
+**FormData payload:**
+
+Useful when submitting directly from a `<form>` element or when you need to include file uploads.
+
+```ts
+const form = document.querySelector("form.product-form");
+const result = await client.addToCart({ payload: new FormData(form) });
+```
+
+When a `FormData` instance is passed, the request is sent as `multipart/form-data` instead of JSON.
 
 ### `updateLineItem`
 
@@ -216,7 +243,11 @@ client.formatPrice({ amount: 4950 });
 
 ## Events
 
-`Siopa` includes a built-in event system. Use `on()` to subscribe to events -- it returns an unsubscribe function.
+`Siopa` includes a built-in event system. Every event name follows a consistent `resource:past-verb` convention.
+
+### `on`
+
+Subscribe to an event. Returns an unsubscribe function.
 
 ```ts
 const unsubscribe = client.on("cart:fetched", (cart) => {
@@ -227,18 +258,60 @@ const unsubscribe = client.on("cart:fetched", (cart) => {
 unsubscribe();
 ```
 
+### `once`
+
+Subscribe to an event for a single emission only. The listener is automatically removed after it fires once. Returns an unsubscribe function in case you need to cancel before it fires.
+
+```ts
+client.once("cart:fetched", (cart) => {
+  console.log("Initial cart load:", cart.item_count);
+});
+
+// Or cancel before it fires
+const unsub = client.once("product:fetched", handler);
+unsub();
+```
+
+### `removeAllListeners`
+
+Remove all listeners for a specific event, or clear every listener across all events.
+
+```ts
+// Remove all listeners for a single event
+client.removeAllListeners("cart:fetched");
+
+// Remove all listeners for all events
+client.removeAllListeners();
+```
+
 ### Available events
 
-| Event                             | Payload Type      | Fired by                                              |
-| --------------------------------- | ----------------- | ----------------------------------------------------- |
-| `product:fetched`                 | `Product`         | `getProduct`                                          |
-| `product:recommendations:fetched` | `Recommendations` | `getProductRecommendations`                           |
-| `cart:fetched`                    | `Cart`            | `getCart`                                             |
-| `cart:updated`                    | `CartChange`      | `updateLineItem`, `removeLineItem`, `removeLineItems` |
-| `cart:cleared`                    | `CartClear`       | `clearCart`                                           |
-| `product:added`                   | `CartAdd`         | `addToCart`                                           |
-| `search:suggest`                  | `Suggest`         | `searchProducts`                                      |
-| `request:error`                   | `ErrorResponse`   | Any method on failure                                 |
+| Event                             | Payload Type        | Fired by                              |
+| --------------------------------- | ------------------- | ------------------------------------- |
+| `product:fetched`                 | `Product`           | `getProduct`                          |
+| `product:recommendations:fetched` | `Recommendations`   | `getProductRecommendations`           |
+| `cart:fetched`                    | `Cart`              | `getCart`                             |
+| `cart:added`                      | `CartAdd`           | `addToCart`                           |
+| `cart:changed`                    | `CartChange`        | `updateLineItem`                      |
+| `cart:removed`                    | `CartChange`        | `removeLineItem`, `removeLineItems`   |
+| `cart:cleared`                    | `CartClear`         | `clearCart`                           |
+| `search:suggested`                | `Suggest`           | `searchProducts`                      |
+| `request:failed`                  | `RequestFailedEvent`| Any method on failure                 |
+
+The `request:failed` payload extends `ErrorResponse` with a `source` field indicating which operation failed:
+
+```ts
+client.on("request:failed", (error) => {
+  console.error(`[${error.source}] ${error.status}: ${error.message}`);
+  // => [cart:added] 422: Variant not found
+});
+```
+
+### Safety
+
+**Listener error isolation** — If a listener throws, subsequent listeners for the same event still run. The error is logged to `console.error` but does not propagate.
+
+**Infinite loop protection** — If the same event is emitted more than 10 times within a single task (e.g. a listener on `cart:fetched` calling `getCart()`), further emissions are skipped and a warning is logged.
 
 ## Error Handling
 
@@ -258,7 +331,7 @@ Narrow the result with a simple `if` check:
 
 ```ts
 const result = await client.addToCart({
-  items: [{ id: 44871526007089, quantity: 1 }],
+  payload: { items: [{ id: 44871526007089, quantity: 1 }] },
 });
 
 if (result.ok) {
@@ -268,11 +341,11 @@ if (result.ok) {
 }
 ```
 
-You can also listen for all errors globally:
+You can also listen for all errors globally via the `request:failed` event. The payload includes a `source` field so you know which operation failed:
 
 ```ts
-client.on("request:error", (error) => {
-  console.error(`[${error.status}] ${error.message}: ${error.description}`);
+client.on("request:failed", (error) => {
+  console.error(`[${error.source}] ${error.status}: ${error.message}`);
 });
 ```
 
@@ -284,6 +357,7 @@ All types are exported from the package entry point:
 import type {
   ApiResult,
   ErrorResponse,
+  RequestFailedEvent,
   ShopifyEventMap,
   AddPayload,
   LineItemPayload,
