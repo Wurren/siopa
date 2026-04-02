@@ -10,7 +10,7 @@
     "typescript"
   ],
   "license": "MIT",
-  "author": "Warren Haskins",
+  "author": "Warren Haskins  <warrenhaskins@gmail.com> (https://warrenhaskins.dev/)",
   "files": [
     "dist/**/*"
   ],
