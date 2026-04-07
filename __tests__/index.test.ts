@@ -402,10 +402,10 @@ describe("Siopa", () => {
       );
     });
 
-    it("emits cart:changed on success", async () => {
+    it("emits cart:updated on success", async () => {
       mockFetchSuccess(CART_CHANGE_RESPONSE);
       const listener = vi.fn();
-      client.on("cart:changed", listener);
+      client.on("cart:updated", listener);
 
       await client.updateLineItem(payload);
 
@@ -421,7 +421,7 @@ describe("Siopa", () => {
 
       expect(listener).toHaveBeenCalledOnce();
       expect(listener.mock.calls[0][0]).toMatchObject({
-        source: "cart:changed",
+        source: "cart:updated",
       });
     });
   });
