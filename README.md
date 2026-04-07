@@ -284,6 +284,32 @@ client.removeAllListeners("cart:fetched");
 client.removeAllListeners();
 ```
 
+### `onThemeEvent`
+
+Subscribe to Shopify [theme editor](https://shopify.dev/docs/storefronts/themes/tools/theme-editor) events dispatched on `document`. Returns an unsubscribe function. These events are only fired inside the theme editor — they will never fire on the live storefront.
+
+```ts
+const unsubscribe = client.onThemeEvent("shopify:section:load", (detail) => {
+  console.log("Section loaded:", detail.sectionId);
+});
+
+unsubscribe();
+```
+
+#### Available theme events
+
+| Event                          | Detail                                           | Description                                           |
+| ------------------------------ | ------------------------------------------------ | ----------------------------------------------------- |
+| `shopify:inspector:activate`   | `undefined`                                      | The theme editor preview inspector has been activated  |
+| `shopify:inspector:deactivate` | `undefined`                                      | The theme editor preview inspector has been deactivated|
+| `shopify:section:load`         | `{ sectionId: string }`                          | A section has been added or re-rendered                |
+| `shopify:section:unload`       | `{ sectionId: string }`                          | A section has been deleted or is being re-rendered     |
+| `shopify:section:select`       | `{ sectionId: string; load: boolean }`           | The user has selected the section in the sidebar       |
+| `shopify:section:deselect`     | `{ sectionId: string }`                          | The user has deselected the section in the sidebar     |
+| `shopify:section:reorder`      | `{ sectionId: string }`                          | A section has been reordered                           |
+| `shopify:block:select`         | `{ blockId: string; sectionId: string; load: boolean }` | The user has selected the block in the sidebar  |
+| `shopify:block:deselect`       | `{ blockId: string; sectionId: string }`         | The user has deselected the block in the sidebar       |
+
 ### Available events
 
 | Event                             | Payload Type         | Fired by                            |
@@ -359,6 +385,7 @@ import type {
   ErrorResponse,
   RequestFailedEvent,
   ShopifyEventMap,
+  CustomEvents,
   AddPayload,
   LineItemPayload,
   PredictiveSearchPayload,
