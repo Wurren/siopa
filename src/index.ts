@@ -102,10 +102,10 @@ export class Siopa {
   private _formatter: Intl.NumberFormat | null = null;
 
   /*
-    |--------------------------------------------------
-    | Properties
-    |--------------------------------------------------
-    */
+  |--------------------------------------------------
+  | Properties
+  |--------------------------------------------------
+  */
 
   constructor(options: SiopaOptions) {
     this.rootUrl = (options.rootUrl || "/").replace(/\/+$/, "");
@@ -120,10 +120,10 @@ export class Siopa {
   }
 
   /*
-    |--------------------------------------------------
-    | on
-    |--------------------------------------------------
-    */
+  |--------------------------------------------------
+  | on
+  |--------------------------------------------------
+  */
 
   on<K extends keyof ShopifyEventMap>(
     event: K,
@@ -139,10 +139,10 @@ export class Siopa {
   }
 
   /*
-    |--------------------------------------------------
-    | once
-    |--------------------------------------------------
-    */
+  |--------------------------------------------------
+  | once
+  |--------------------------------------------------
+  */
 
   once<K extends keyof ShopifyEventMap>(
     event: K,
@@ -156,10 +156,10 @@ export class Siopa {
   }
 
   /*
-    |--------------------------------------------------
-    | removeAllListeners
-    |--------------------------------------------------
-    */
+  |--------------------------------------------------
+  | removeAllListeners
+  |--------------------------------------------------
+  */
 
   removeAllListeners(event?: keyof ShopifyEventMap): void {
     if (event) {
@@ -170,10 +170,10 @@ export class Siopa {
   }
 
   /*
-    |--------------------------------------------------
-    | _emit
-    |--------------------------------------------------
-    */
+  |--------------------------------------------------
+  | _emit
+  |--------------------------------------------------
+  */
 
   private _emit<K extends keyof ShopifyEventMap>(event: K, data: ShopifyEventMap[K]) {
     const count = (this._emitCounts.get(event) ?? 0) + 1;
@@ -201,10 +201,27 @@ export class Siopa {
   }
 
   /*
-    |--------------------------------------------------
-    | getProduct
-    |--------------------------------------------------
-    */
+  |--------------------------------------------------
+  | Theme Events
+  |--------------------------------------------------
+  */
+
+  onThemeEvent<K extends keyof CustomEvents>(
+    event: K,
+    callback: (detail: CustomEvents[K]) => void,
+  ) {
+    const handler = ((e: CustomEvent<CustomEvents[K]>) => {
+      callback(e.detail);
+    }) as EventListener;
+    document.addEventListener(event, handler);
+    return () => document.removeEventListener(event, handler);
+  }
+
+  /*
+  |--------------------------------------------------
+  | getProduct
+  |--------------------------------------------------
+  */
 
   async getProduct({ handle }: { handle: string }) {
     const result = await this._APIRequest<Product>({
@@ -220,10 +237,10 @@ export class Siopa {
   }
 
   /*
-    |--------------------------------------------------
-    | Add to Cart
-    |--------------------------------------------------
-    */
+  |--------------------------------------------------
+  | Add to Cart
+  |--------------------------------------------------
+  */
 
   async addToCart({ payload }: { payload: AddPayload }) {
     const result = await this._APIRequest<CartAdd, AddPayload>({
@@ -242,10 +259,10 @@ export class Siopa {
   }
 
   /*
-    |--------------------------------------------------
-    | getCart
-    |--------------------------------------------------
-    */
+  |--------------------------------------------------
+  | getCart
+  |--------------------------------------------------
+  */
 
   async getCart() {
     const result = await this._APIRequest<Cart>({
@@ -261,10 +278,10 @@ export class Siopa {
   }
 
   /*
-    |--------------------------------------------------
-    | Update Line Item
-    |--------------------------------------------------
-    */
+  |--------------------------------------------------
+  | Update Line Item
+  |--------------------------------------------------
+  */
 
   async updateLineItem(payload: LineItemPayload) {
     const result = await this._APIRequest<CartChange, LineItemPayload>({
@@ -283,10 +300,10 @@ export class Siopa {
   }
 
   /*
-    |--------------------------------------------------
-    | Remove Line Item
-    |--------------------------------------------------
-    */
+  |--------------------------------------------------
+  | Remove Line Item
+  |--------------------------------------------------
+  */
 
   async removeLineItem(payload: { id: string | number }) {
     const result = await this._APIRequest<CartChange, { id: string | number; quantity: 0 }>({
@@ -303,10 +320,10 @@ export class Siopa {
   }
 
   /*
-    |--------------------------------------------------
-    | Remove Line Items
-    |--------------------------------------------------
-    */
+  |--------------------------------------------------
+  | Remove Line Items
+  |--------------------------------------------------
+  */
 
   async removeLineItems(payload: { ids: string[] }) {
     const idsMap = payload.ids.reduce(
@@ -333,10 +350,10 @@ export class Siopa {
   }
 
   /*
-    |--------------------------------------------------
-    | Clear Cart
-    |--------------------------------------------------
-    */
+  |--------------------------------------------------
+  | Clear Cart
+  |--------------------------------------------------
+  */
 
   async clearCart() {
     const result = await this._APIRequest<CartClear>({
@@ -353,10 +370,10 @@ export class Siopa {
   }
 
   /*
-    |--------------------------------------------------
-    | Get Product Recommendations
-    |--------------------------------------------------
-    */
+  |--------------------------------------------------
+  | Get Product Recommendations
+  |--------------------------------------------------
+  */
 
   async getProductRecommendations({
     product_id,
@@ -384,10 +401,10 @@ export class Siopa {
   }
 
   /*
-    |--------------------------------------------------
-    | Search Products
-    |--------------------------------------------------
-    */
+  |--------------------------------------------------
+  | Search Products
+  |--------------------------------------------------
+  */
 
   async searchProducts(payload: PredictiveSearchPayload) {
     const {
@@ -428,10 +445,10 @@ export class Siopa {
   }
 
   /*
-    |--------------------------------------------------
-    | _APIRequest
-    |--------------------------------------------------
-    */
+  |--------------------------------------------------
+  | _APIRequest
+  |--------------------------------------------------
+  */
 
   private async _APIRequest<T, TPayload = {}>({
     url,
@@ -504,10 +521,10 @@ export class Siopa {
   }
 
   /*
-    |--------------------------------------------------
-    | Format Price
-    |--------------------------------------------------
-    */
+  |--------------------------------------------------
+  | Format Price
+  |--------------------------------------------------
+  */
 
   formatPrice({ amount }: { amount: number }) {
     const total = amount / 100;
@@ -527,4 +544,4 @@ export class Siopa {
   }
 }
 
-export type { Cart, Product, CustomEvents };
+export type { Cart, Product };

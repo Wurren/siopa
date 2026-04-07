@@ -639,6 +639,84 @@ describe("Siopa", () => {
     });
   });
 
+  // ---------- onThemeEvent ----------
+
+  describe("onThemeEvent", () => {
+    let docMock: EventTarget;
+
+    beforeEach(() => {
+      docMock = new EventTarget();
+      vi.stubGlobal("document", docMock);
+    });
+
+    afterEach(() => {
+      vi.unstubAllGlobals();
+    });
+
+    it("receives detail from a dispatched CustomEvent", () => {
+      const listener = vi.fn();
+      client.onThemeEvent("shopify:section:load", listener);
+
+      docMock.dispatchEvent(
+        new CustomEvent("shopify:section:load", { detail: { sectionId: "hero" } }),
+      );
+
+      expect(listener).toHaveBeenCalledOnce();
+      expect(listener).toHaveBeenCalledWith({ sectionId: "hero" });
+    });
+
+    it("works with events that have undefined detail", () => {
+      const listener = vi.fn();
+      client.onThemeEvent("shopify:inspector:activate", listener);
+
+      docMock.dispatchEvent(new CustomEvent("shopify:inspector:activate"));
+
+      expect(listener).toHaveBeenCalledOnce();
+      expect(listener).toHaveBeenCalledWith(null);
+    });
+
+    it("returns an unsubscribe function that removes the listener", () => {
+      const listener = vi.fn();
+      const unsub = client.onThemeEvent("shopify:section:load", listener);
+
+      unsub();
+
+      docMock.dispatchEvent(
+        new CustomEvent("shopify:section:load", { detail: { sectionId: "hero" } }),
+      );
+
+      expect(listener).not.toHaveBeenCalled();
+    });
+
+    it("supports multiple listeners for the same event", () => {
+      const listener1 = vi.fn();
+      const listener2 = vi.fn();
+      client.onThemeEvent("shopify:section:select", listener1);
+      client.onThemeEvent("shopify:section:select", listener2);
+
+      const detail = { sectionId: "hero", load: true };
+      docMock.dispatchEvent(new CustomEvent("shopify:section:select", { detail }));
+
+      expect(listener1).toHaveBeenCalledWith(detail);
+      expect(listener2).toHaveBeenCalledWith(detail);
+    });
+
+    it("unsubscribing one listener does not affect others", () => {
+      const listener1 = vi.fn();
+      const listener2 = vi.fn();
+      const unsub1 = client.onThemeEvent("shopify:block:select", listener1);
+      client.onThemeEvent("shopify:block:select", listener2);
+
+      unsub1();
+
+      const detail = { blockId: "btn", sectionId: "hero", load: false };
+      docMock.dispatchEvent(new CustomEvent("shopify:block:select", { detail }));
+
+      expect(listener1).not.toHaveBeenCalled();
+      expect(listener2).toHaveBeenCalledWith(detail);
+    });
+  });
+
   // ---------- _APIRequest edge cases ----------
 
   describe("_APIRequest edge cases", () => {
