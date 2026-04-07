@@ -7,6 +7,7 @@ import type {
 } from "@grafikr/shopify-typescript/type/endpoints/Cart";
 import type { Recommendations } from "@grafikr/shopify-typescript/type/endpoints/Product";
 import type { Suggest } from "@grafikr/shopify-typescript/type/endpoints/Search";
+import type { CustomEvents } from "@grafikr/shopify-typescript/global/CustomEvents";
 
 type SiopaOptions = {
   rootUrl: string;
@@ -32,11 +33,12 @@ export type ShopifyEventMap = {
   "product:recommendations:fetched": Recommendations;
   "cart:fetched": Cart;
   "cart:added": CartAdd;
-  "cart:changed": CartChange;
+  "cart:updated": CartChange;
   "cart:removed": CartChange;
   "cart:cleared": CartClear;
   "search:suggested": Suggest;
   "request:failed": RequestFailedEvent;
+  "request:loading": boolean;
 };
 
 export type AddPayload =
@@ -272,9 +274,9 @@ export class Siopa {
     });
 
     if (result.ok) {
-      this._emit("cart:changed", result.data);
+      this._emit("cart:updated", result.data);
     } else {
-      this._emit("request:failed", { ...result.error, source: "cart:changed" });
+      this._emit("request:failed", { ...result.error, source: "cart:updated" });
     }
 
     return result;
@@ -442,6 +444,8 @@ export class Siopa {
   }): Promise<ApiResult<T>> {
     let fetched: Response;
 
+    this._emit("request:loading", true);
+
     const headers = payload
       ? payload instanceof FormData
         ? undefined
@@ -454,7 +458,9 @@ export class Siopa {
         headers,
         body: payload instanceof FormData ? payload : JSON.stringify(payload),
       });
+      this._emit("request:loading", false);
     } catch (e) {
+      this._emit("request:loading", false);
       return {
         ok: false,
         error: {
@@ -520,3 +526,5 @@ export class Siopa {
     return this._formatter.format(total);
   }
 }
+
+export type { Cart, Product, CustomEvents };
