@@ -4,6 +4,8 @@ import { PRODUCT_RESPONSE, CART_ADD_RESPONSE, CART_RESPONSE } from "./data";
 
 const CART_CHANGE_RESPONSE = { items: CART_RESPONSE.items };
 const CART_CLEAR_RESPONSE = { items: [] };
+const COLLECTION_RESPONSE = { collection: { id: 1, handle: "summer", title: "Summer" } };
+const COLLECTION_PRODUCTS_RESPONSE = { products: [PRODUCT_RESPONSE] };
 const RECOMMENDATIONS_RESPONSE = { products: [PRODUCT_RESPONSE] };
 const SEARCH_SUGGEST_RESPONSE = {
   resources: {
@@ -261,6 +263,159 @@ describe("Siopa", () => {
           description: "Failed to fetch",
         },
       });
+    });
+  });
+
+  // ---------- getCollection ----------
+
+  describe("getCollection", () => {
+    it("fetches a collection by handle and returns data", async () => {
+      mockFetchSuccess(COLLECTION_RESPONSE);
+
+      const result = await client.getCollection({ handle: "summer" });
+
+      expect(result).toEqual({ ok: true, data: COLLECTION_RESPONSE });
+      expect(globalThis.fetch).toHaveBeenCalledWith(
+        "https://shop.example.com/collections/summer.json",
+        expect.objectContaining({ method: "GET" }),
+      );
+    });
+
+    it("emits collection:fetched on success", async () => {
+      mockFetchSuccess(COLLECTION_RESPONSE);
+      const listener = vi.fn();
+      client.on("collection:fetched", listener);
+
+      await client.getCollection({ handle: "summer" });
+
+      expect(listener).toHaveBeenCalledWith(COLLECTION_RESPONSE);
+    });
+
+    it("returns an error result on HTTP error", async () => {
+      mockFetchError(404, { message: "Not found", description: "Collection not found" });
+
+      const result = await client.getCollection({ handle: "nope" });
+
+      expect(result.ok).toBe(false);
+      if (!result.ok) {
+        expect(result.error.status).toBe(404);
+        expect(result.error.message).toBe("Not found");
+      }
+    });
+
+    it("emits request:failed with source on HTTP error", async () => {
+      mockFetchError(404);
+      const listener = vi.fn();
+      client.on("request:failed", listener);
+
+      await client.getCollection({ handle: "nope" });
+
+      expect(listener).toHaveBeenCalledOnce();
+      expect(listener.mock.calls[0][0]).toMatchObject({
+        status: 404,
+        source: "collection:fetched",
+      });
+    });
+  });
+
+  // ---------- getCollectionProducts ----------
+
+  describe("getCollectionProducts", () => {
+    it("fetches collection products by handle and returns data", async () => {
+      mockFetchSuccess(COLLECTION_PRODUCTS_RESPONSE);
+
+      const result = await client.getCollectionProducts({ handle: "summer" });
+
+      expect(result).toEqual({ ok: true, data: COLLECTION_PRODUCTS_RESPONSE });
+      expect(globalThis.fetch).toHaveBeenCalledWith(
+        "https://shop.example.com/collections/summer/products.json",
+        expect.objectContaining({ method: "GET" }),
+      );
+    });
+
+    it("includes query params when provided", async () => {
+      mockFetchSuccess(COLLECTION_PRODUCTS_RESPONSE);
+
+      await client.getCollectionProducts({
+        handle: "summer",
+        params: { limit: 5, page: 2, sort_by: "best-selling" },
+      });
+
+      const calledUrl = (globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
+      const url = new URL(calledUrl);
+
+      expect(url.pathname).toBe("/collections/summer/products.json");
+      expect(url.searchParams.get("limit")).toBe("5");
+      expect(url.searchParams.get("page")).toBe("2");
+      expect(url.searchParams.get("sort_by")).toBe("best-selling");
+    });
+
+    it("omits query string when no params are provided", async () => {
+      mockFetchSuccess(COLLECTION_PRODUCTS_RESPONSE);
+
+      await client.getCollectionProducts({ handle: "summer" });
+
+      expect(globalThis.fetch).toHaveBeenCalledWith(
+        "https://shop.example.com/collections/summer/products.json",
+        expect.objectContaining({ method: "GET" }),
+      );
+    });
+
+    it("preserves limit and page when set to 0", async () => {
+      mockFetchSuccess(COLLECTION_PRODUCTS_RESPONSE);
+
+      await client.getCollectionProducts({
+        handle: "summer",
+        params: { limit: 0, page: 0 },
+      });
+
+      const calledUrl = (globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
+      const url = new URL(calledUrl);
+
+      expect(url.searchParams.get("limit")).toBe("0");
+      expect(url.searchParams.get("page")).toBe("0");
+    });
+
+    it("emits collection:products:fetched on success", async () => {
+      mockFetchSuccess(COLLECTION_PRODUCTS_RESPONSE);
+      const listener = vi.fn();
+      client.on("collection:products:fetched", listener);
+
+      await client.getCollectionProducts({ handle: "summer" });
+
+      expect(listener).toHaveBeenCalledWith(COLLECTION_PRODUCTS_RESPONSE);
+    });
+
+    it("returns an error result on HTTP error", async () => {
+      mockFetchError(404, { message: "Not found", description: "Collection not found" });
+
+      const result = await client.getCollectionProducts({ handle: "nope" });
+
+      expect(result.ok).toBe(false);
+      if (!result.ok) {
+        expect(result.error.status).toBe(404);
+        expect(result.error.message).toBe("Not found");
+      }
+    });
+
+    it("emits request:failed with source on HTTP error", async () => {
+      mockFetchError(404);
+      const listener = vi.fn();
+      client.on("request:failed", listener);
+
+      await client.getCollectionProducts({ handle: "nope" });
+
+      expect(listener).toHaveBeenCalledOnce();
+      expect(listener.mock.calls[0][0]).toMatchObject({
+        status: 404,
+        source: "collection:products:fetched",
+      });
+    });
+
+    it("throws when handle is empty", async () => {
+      await expect(
+        client.getCollectionProducts({ handle: "" }),
+      ).rejects.toThrow("Handle is required");
     });
   });
 
