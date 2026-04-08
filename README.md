@@ -63,6 +63,58 @@ if (result.ok) {
 }
 ```
 
+### `getCollection`
+
+Fetch a single collection by its handle.
+
+```ts
+const result = await client.getCollection({ handle: "summer" });
+
+if (result.ok) {
+  console.log(result.data.collection.title);
+}
+```
+
+### `getCollectionProducts`
+
+Fetch the products within a collection. All query parameters are optional.
+
+```ts
+const result = await client.getCollectionProducts({ handle: "summer" });
+
+if (result.ok) {
+  console.log(result.data.products);
+}
+```
+
+With filtering and sorting:
+
+```ts
+const result = await client.getCollectionProducts({
+  handle: "summer",
+  params: {
+    limit: 12,
+    page: 2,
+    sort_by: "best-selling",
+  },
+});
+```
+
+| Parameter | Type               | Default    |
+| --------- | ------------------ | ---------- |
+| `handle`  | `string`           | (required) |
+| `params`  | `CollectionProductsParams` | `undefined` |
+
+**`CollectionProductsParams`**
+
+| Parameter | Type                | Default     |
+| --------- | ------------------- | ----------- |
+| `limit`   | `number`            | `undefined` |
+| `page`    | `number`            | `undefined` |
+| `sort_by` | `CollectionSortBy`  | `undefined` |
+
+**`CollectionSortBy`** — `"manual"` | `"best-selling"` | `"title-ascending"` | `"title-descending"` | `"price-ascending"` | `"price-descending"` | `"created-ascending"` | `"created-descending"`
+
 ### `getCart`
 
 Retrieve the current cart.
@@ -312,17 +364,19 @@ unsubscribe();
 
 ### Available events
 
-| Event                             | Payload Type         | Fired by                            |
-| --------------------------------- | -------------------- | ----------------------------------- |
-| `product:fetched`                 | `Product`            | `getProduct`                        |
-| `product:recommendations:fetched` | `Recommendations`    | `getProductRecommendations`         |
-| `cart:fetched`                    | `Cart`               | `getCart`                           |
-| `cart:added`                      | `CartAdd`            | `addToCart`                         |
-| `cart:changed`                    | `CartChange`         | `updateLineItem`                    |
-| `cart:removed`                    | `CartChange`         | `removeLineItem`, `removeLineItems` |
-| `cart:cleared`                    | `CartClear`          | `clearCart`                         |
-| `search:suggested`                | `Suggest`            | `searchProducts`                    |
-| `request:failed`                  | `RequestFailedEvent` | Any method on failure               |
+| Event                             | Payload Type                    | Fired by                            |
+| --------------------------------- | ------------------------------- | ----------------------------------- |
+| `product:fetched`                 | `Product`                       | `getProduct`                        |
+| `product:recommendations:fetched` | `Recommendations`               | `getProductRecommendations`         |
+| `collection:fetched`              | `{ collection: Collection }`    | `getCollection`                     |
+| `collection:products:fetched`     | `{ products: Product[] }`       | `getCollectionProducts`             |
+| `cart:fetched`                    | `Cart`                          | `getCart`                           |
+| `cart:added`                      | `CartAdd`                       | `addToCart`                         |
+| `cart:changed`                    | `CartChange`                    | `updateLineItem`                    |
+| `cart:removed`                    | `CartChange`                    | `removeLineItem`, `removeLineItems` |
+| `cart:cleared`                    | `CartClear`                     | `clearCart`                         |
+| `search:suggested`                | `Suggest`                       | `searchProducts`                    |
+| `request:failed`                  | `RequestFailedEvent`            | Any method on failure               |
 
 The `request:failed` payload extends `ErrorResponse` with a `source` field indicating which operation failed:
 
@@ -388,6 +442,8 @@ import type {
   CustomEvents,
   AddPayload,
   LineItemPayload,
+  CollectionProductsParams,
+  CollectionSortBy,
   PredictiveSearchPayload,
   PredictiveSearchResourceType,
   PredictiveSearchField,

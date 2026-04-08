@@ -8,6 +8,7 @@ import type {
 import type { Recommendations } from "@grafikr/shopify-typescript/type/endpoints/Product";
 import type { Suggest } from "@grafikr/shopify-typescript/type/endpoints/Search";
 import type { CustomEvents } from "@grafikr/shopify-typescript/global/CustomEvents";
+import type { Collection } from "@grafikr/shopify-typescript/type/json/Search/Collection";
 
 type SiopaOptions = {
   rootUrl: string;
@@ -26,11 +27,29 @@ export type RequestFailedEvent = ErrorResponse & {
   source: Exclude<keyof ShopifyEventMap, "request:failed">;
 };
 
+export type CollectionSortBy =
+  | "manual"
+  | "best-selling"
+  | "title-ascending"
+  | "title-descending"
+  | "price-ascending"
+  | "price-descending"
+  | "created-ascending"
+  | "created-descending";
+
+export type CollectionProductsParams = {
+  limit?: number;
+  page?: number;
+  sort_by?: CollectionSortBy;
+};
+
 export type ApiResult<T> = { ok: true; data: T } | { ok: false; error: ErrorResponse };
 
 export type ShopifyEventMap = {
   "product:fetched": Product;
   "product:recommendations:fetched": Recommendations;
+  "collection:fetched": { collection: Collection };
+  "collection:products:fetched": { products: Product[] };
   "cart:fetched": Cart;
   "cart:added": CartAdd;
   "cart:updated": CartChange;
@@ -233,6 +252,70 @@ export class Siopa {
     } else {
       this._emit("request:failed", { ...result.error, source: "product:fetched" });
     }
+    return result;
+  }
+
+  /*
+  |--------------------------------------------------
+  | getCollection
+  |--------------------------------------------------
+  */
+
+  async getCollection({ handle }: { handle: string }) {
+    const result = await this._APIRequest<{ collection: Collection }>({
+      url: `${this.rootUrl}/collections/${handle}.json`,
+      options: { method: "GET" },
+    });
+
+    if (result.ok) {
+      this._emit("collection:fetched", result.data);
+    } else {
+      this._emit("request:failed", { ...result.error, source: "collection:fetched" });
+    }
+
+    return result;
+  }
+
+  async getCollectionProducts({
+    handle,
+    params,
+  }: {
+    handle: string;
+    params?: CollectionProductsParams;
+  }) {
+    if (!handle) {
+      throw new Error("Handle is required");
+    }
+
+    const { limit, page, sort_by } = params ?? {};
+    const paramsString = new URLSearchParams();
+
+    if (limit != null) {
+      paramsString.set("limit", String(limit));
+    }
+
+    if (page != null) {
+      paramsString.set("page", String(page));
+    }
+
+    if (sort_by != null) {
+      paramsString.set("sort_by", sort_by);
+    }
+
+    const qs = paramsString.toString();
+    const url = `${this.rootUrl}/collections/${handle}/products.json${qs ? `?${qs}` : ""}`;
+
+    const result = await this._APIRequest<{ products: Product[] }>({
+      url,
+      options: { method: "GET" },
+    });
+
+    if (result.ok) {
+      this._emit("collection:products:fetched", result.data);
+    } else {
+      this._emit("request:failed", { ...result.error, source: "collection:products:fetched" });
+    }
+
     return result;
   }
 
