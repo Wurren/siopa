@@ -9,6 +9,7 @@ import {
   GET_COLLECTION_RESPONSE,
   GET_COLLECTION_PRODUCTS_RESPONSE,
   GET_COLLECTION_PRODUCTS_WITH_QUERY_PARAMS_RESPONSE,
+  GET_SECTIONS_RESPONSE,
 } from "./data";
 
 const CART_CHANGE_RESPONSE = { items: GET_CART_RESPONSE.items };
@@ -751,6 +752,123 @@ describe("Siopa", () => {
       await client.searchProducts({ q: "test" });
 
       expect(listener).toHaveBeenCalledWith(SEARCH_PRODUCTS_RESPONSE);
+    });
+  });
+
+  // ---------- getSections ----------
+
+  describe("getSections", () => {
+    const sectionId = "template--26931341263194__block_slider_VMJwXd";
+
+    it("fetches sections with correct URL and returns data", async () => {
+      mockFetchSuccess(GET_SECTIONS_RESPONSE);
+
+      const result = await client.getSections({ ids: [sectionId] });
+
+      expect(result).toEqual({ ok: true, data: GET_SECTIONS_RESPONSE });
+
+      const calledUrl = (globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
+      const url = new URL(calledUrl);
+
+      expect(url.pathname).toBe("/");
+      expect(url.searchParams.get("sections")).toBe(sectionId);
+      expect(globalThis.fetch).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({ method: "GET" }),
+      );
+    });
+
+    it("joins multiple section IDs with commas", async () => {
+      mockFetchSuccess(GET_SECTIONS_RESPONSE);
+
+      await client.getSections({ ids: ["header", "footer"] });
+
+      const calledUrl = (globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
+      const url = new URL(calledUrl);
+
+      expect(url.searchParams.get("sections")).toBe("header,footer");
+    });
+
+    it("renders sections in the context of a specific page path", async () => {
+      mockFetchSuccess(GET_SECTIONS_RESPONSE);
+
+      await client.getSections({ ids: [sectionId], path: "/collections/featured" });
+
+      const calledUrl = (globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
+      const url = new URL(calledUrl);
+
+      expect(url.pathname).toBe("/collections/featured");
+      expect(url.searchParams.get("sections")).toBe(sectionId);
+    });
+
+    it("defaults path to root when not provided", async () => {
+      mockFetchSuccess(GET_SECTIONS_RESPONSE);
+
+      await client.getSections({ ids: [sectionId] });
+
+      const calledUrl = (globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
+      const url = new URL(calledUrl);
+
+      expect(url.pathname).toBe("/");
+    });
+
+    it("emits section:fetched on success", async () => {
+      mockFetchSuccess(GET_SECTIONS_RESPONSE);
+      const listener = vi.fn();
+      client.on("section:fetched", listener);
+
+      await client.getSections({ ids: [sectionId] });
+
+      expect(listener).toHaveBeenCalledWith(GET_SECTIONS_RESPONSE);
+    });
+
+    it("returns an error result on HTTP error", async () => {
+      mockFetchError(404, { message: "Not found", description: "Section not found" });
+
+      const result = await client.getSections({ ids: ["nonexistent"] });
+
+      expect(result.ok).toBe(false);
+      if (!result.ok) {
+        expect(result.error.status).toBe(404);
+        expect(result.error.message).toBe("Not found");
+      }
+    });
+
+    it("emits request:failed with source on HTTP error", async () => {
+      mockFetchError(404);
+      const listener = vi.fn();
+      client.on("request:failed", listener);
+
+      await client.getSections({ ids: ["nonexistent"] });
+
+      expect(listener).toHaveBeenCalledOnce();
+      expect(listener.mock.calls[0][0]).toMatchObject({
+        status: 404,
+        source: "section:fetched",
+      });
+    });
+
+    it("throws when ids array is empty", async () => {
+      await expect(
+        client.getSections({ ids: [] }),
+      ).rejects.toThrow("At least one section ID is required");
+    });
+
+    it("throws when more than 5 section IDs are provided", async () => {
+      await expect(
+        client.getSections({ ids: ["a", "b", "c", "d", "e", "f"] }),
+      ).rejects.toThrow("A maximum of 5 sections can be requested at once");
+    });
+
+    it("works with a relative rootUrl", async () => {
+      const c = new Siopa({ ...DEFAULT_OPTIONS, rootUrl: "" });
+      mockFetchSuccess(GET_SECTIONS_RESPONSE);
+
+      await c.getSections({ ids: [sectionId] });
+
+      const calledUrl = (globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
+
+      expect(calledUrl).toBe(`/?sections=${encodeURIComponent(sectionId)}`);
     });
   });
 

@@ -27,6 +27,10 @@ export type RequestFailedEvent = ErrorResponse & {
   source: Exclude<keyof ShopifyEventMap, "request:failed">;
 };
 
+export type Section = {
+  [key: string]: string | null;
+};
+
 export type CollectionSortBy =
   | "manual"
   | "best-selling"
@@ -56,6 +60,7 @@ export type ShopifyEventMap = {
   "cart:removed": CartChange;
   "cart:cleared": CartClear;
   "search:suggested": Suggest;
+  "section:fetched": Section;
   "request:failed": RequestFailedEvent;
   "request:loading": boolean;
 };
@@ -522,6 +527,39 @@ export class Siopa {
       this._emit("search:suggested", result.data);
     } else {
       this._emit("request:failed", { ...result.error, source: "search:suggested" });
+    }
+
+    return result;
+  }
+
+  /*
+  |--------------------------------------------------
+  | Get Section
+  |--------------------------------------------------
+  */
+
+  async getSections({ ids, path = "/" }: { ids: string[]; path?: string }) {
+    if (!ids.length) {
+      throw new Error("At least one section ID is required");
+    }
+
+    if (ids.length > 5) {
+      throw new Error("A maximum of 5 sections can be requested at once");
+    }
+
+    const normalizedPath = path.replace(/^\/+/, "");
+    const params = new URLSearchParams({ sections: ids.join(",") });
+    const url = `${this.rootUrl}/${normalizedPath}?${params.toString()}`;
+
+    const result = await this._APIRequest<Section>({
+      url,
+      options: { method: "GET" },
+    });
+
+    if (result.ok) {
+      this._emit("section:fetched", result.data);
+    } else {
+      this._emit("request:failed", { ...result.error, source: "section:fetched" });
     }
 
     return result;
