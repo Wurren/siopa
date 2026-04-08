@@ -272,6 +272,37 @@ const result = await client.searchProducts({
 | `resources.options.unavailable_products` | `"show"` \| `"hide"` \| `"last"` | `"last"`                                     |
 | `resources.options.fields`               | `PredictiveSearchField[]`        | all fields                                   |
 
+### `getSections`
+
+Fetch rendered HTML for one or more theme [sections](https://shopify.dev/docs/api/ajax/section-rendering) via the Section Rendering API. Sections can be rendered in the context of any page by passing a `path`.
+
+```ts
+const result = await client.getSections({
+  ids: ["template--26931341263194__block_slider_VMJwXd"],
+});
+
+if (result.ok) {
+  const html = result.data["template--26931341263194__block_slider_VMJwXd"];
+  // html is string | null — null means the section failed to render
+}
+```
+
+Render sections in the context of a specific page:
+
+```ts
+const result = await client.getSections({
+  ids: ["header", "footer"],
+  path: "/collections/featured",
+});
+```
+
+| Parameter | Type       | Default     |
+| --------- | ---------- | ----------- |
+| `ids`     | `string[]` | (required)  |
+| `path`    | `string`   | `"/"`       |
+
+A maximum of 5 section IDs can be requested at once. Sections that fail to render are returned as `null` in the response.
+
 ### `formatPrice`
 
 Format a price amount (in cents) into a locale-aware currency string using `Intl.NumberFormat`. The formatter is constructed from the `locale`, `countryCode`, and `currencyCode` options passed to the constructor and is cached after the first call.
@@ -376,6 +407,7 @@ unsubscribe();
 | `cart:removed`                    | `CartChange`                    | `removeLineItem`, `removeLineItems` |
 | `cart:cleared`                    | `CartClear`                     | `clearCart`                         |
 | `search:suggested`                | `Suggest`                       | `searchProducts`                    |
+| `section:fetched`                 | `Record<string, string \| null>` | `getSections`                      |
 | `request:failed`                  | `RequestFailedEvent`            | Any method on failure               |
 
 The `request:failed` payload extends `ErrorResponse` with a `source` field indicating which operation failed:
