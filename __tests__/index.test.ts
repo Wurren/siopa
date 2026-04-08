@@ -1,22 +1,18 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { Siopa } from "../src/index";
-import { PRODUCT_RESPONSE, CART_ADD_RESPONSE, CART_RESPONSE } from "./data";
+import {
+  GET_PRODUCT_RESPONSE,
+  CART_ADD_RESPONSE,
+  GET_CART_RESPONSE,
+  GET_PRODUCT_RECOMMENDATIONS_RESPONSE,
+  SEARCH_PRODUCTS_RESPONSE,
+  GET_COLLECTION_RESPONSE,
+  GET_COLLECTION_PRODUCTS_RESPONSE,
+  GET_COLLECTION_PRODUCTS_WITH_QUERY_PARAMS_RESPONSE,
+} from "./data";
 
-const CART_CHANGE_RESPONSE = { items: CART_RESPONSE.items };
+const CART_CHANGE_RESPONSE = { items: GET_CART_RESPONSE.items };
 const CART_CLEAR_RESPONSE = { items: [] };
-const COLLECTION_RESPONSE = { collection: { id: 1, handle: "summer", title: "Summer" } };
-const COLLECTION_PRODUCTS_RESPONSE = { products: [PRODUCT_RESPONSE] };
-const RECOMMENDATIONS_RESPONSE = { products: [PRODUCT_RESPONSE] };
-const SEARCH_SUGGEST_RESPONSE = {
-  resources: {
-    results: {
-      products: [{ id: 1, title: "Test product" }],
-      queries: [],
-      collections: [],
-      pages: [],
-    },
-  },
-};
 
 const DEFAULT_OPTIONS = {
   rootUrl: "https://shop.example.com",
@@ -58,18 +54,18 @@ describe("Siopa", () => {
 
   describe("on / unsubscribe", () => {
     it("registers a listener that receives data on successful API calls", async () => {
-      mockFetchSuccess(PRODUCT_RESPONSE);
+      mockFetchSuccess(GET_PRODUCT_RESPONSE);
       const listener = vi.fn();
       client.on("product:fetched", listener);
 
       await client.getProduct({ handle: "red-rain-coat" });
 
       expect(listener).toHaveBeenCalledOnce();
-      expect(listener).toHaveBeenCalledWith(PRODUCT_RESPONSE);
+      expect(listener).toHaveBeenCalledWith(GET_PRODUCT_RESPONSE);
     });
 
     it("returns an unsubscribe function that removes the listener", async () => {
-      mockFetchSuccess(PRODUCT_RESPONSE);
+      mockFetchSuccess(GET_PRODUCT_RESPONSE);
       const listener = vi.fn();
       const unsub = client.on("product:fetched", listener);
 
@@ -87,12 +83,12 @@ describe("Siopa", () => {
       const listener = vi.fn();
       client.once("product:fetched", listener);
 
-      mockFetchSuccess(PRODUCT_RESPONSE);
+      mockFetchSuccess(GET_PRODUCT_RESPONSE);
       await client.getProduct({ handle: "red-rain-coat" });
       await client.getProduct({ handle: "blue-rain-coat" });
 
       expect(listener).toHaveBeenCalledOnce();
-      expect(listener).toHaveBeenCalledWith(PRODUCT_RESPONSE);
+      expect(listener).toHaveBeenCalledWith(GET_PRODUCT_RESPONSE);
     });
 
     it("returns an unsubscribe function that prevents the callback from firing", async () => {
@@ -101,7 +97,7 @@ describe("Siopa", () => {
 
       unsub();
 
-      mockFetchSuccess(PRODUCT_RESPONSE);
+      mockFetchSuccess(GET_PRODUCT_RESPONSE);
       await client.getProduct({ handle: "red-rain-coat" });
 
       expect(listener).not.toHaveBeenCalled();
@@ -119,7 +115,7 @@ describe("Siopa", () => {
 
       client.removeAllListeners("product:fetched");
 
-      mockFetchSuccess(PRODUCT_RESPONSE);
+      mockFetchSuccess(GET_PRODUCT_RESPONSE);
       await client.getProduct({ handle: "red-rain-coat" });
 
       expect(listener1).not.toHaveBeenCalled();
@@ -134,10 +130,10 @@ describe("Siopa", () => {
 
       client.removeAllListeners();
 
-      mockFetchSuccess(PRODUCT_RESPONSE);
+      mockFetchSuccess(GET_PRODUCT_RESPONSE);
       await client.getProduct({ handle: "red-rain-coat" });
 
-      mockFetchSuccess(CART_RESPONSE);
+      mockFetchSuccess(GET_CART_RESPONSE);
       await client.getCart();
 
       expect(productListener).not.toHaveBeenCalled();
@@ -158,7 +154,7 @@ describe("Siopa", () => {
       client.on("product:fetched", badListener);
       client.on("product:fetched", goodListener);
 
-      mockFetchSuccess(PRODUCT_RESPONSE);
+      mockFetchSuccess(GET_PRODUCT_RESPONSE);
       await client.getProduct({ handle: "red-rain-coat" });
 
       expect(badListener).toHaveBeenCalledOnce();
@@ -177,7 +173,7 @@ describe("Siopa", () => {
 
       vi.spyOn(globalThis, "fetch").mockImplementation(() =>
         Promise.resolve(
-          new Response(JSON.stringify(CART_RESPONSE), {
+          new Response(JSON.stringify(GET_CART_RESPONSE), {
             status: 200,
             headers: { "Content-Type": "application/json" },
           }),
@@ -203,11 +199,11 @@ describe("Siopa", () => {
 
   describe("getProduct", () => {
     it("fetches a product by handle and returns data", async () => {
-      mockFetchSuccess(PRODUCT_RESPONSE);
+      mockFetchSuccess(GET_PRODUCT_RESPONSE);
 
       const result = await client.getProduct({ handle: "red-rain-coat" });
 
-      expect(result).toEqual({ ok: true, data: PRODUCT_RESPONSE });
+      expect(result).toEqual({ ok: true, data: GET_PRODUCT_RESPONSE });
       expect(globalThis.fetch).toHaveBeenCalledWith(
         "https://shop.example.com/products/red-rain-coat.json",
         expect.objectContaining({ method: "GET" }),
@@ -215,13 +211,13 @@ describe("Siopa", () => {
     });
 
     it("emits product:fetched on success", async () => {
-      mockFetchSuccess(PRODUCT_RESPONSE);
+      mockFetchSuccess(GET_PRODUCT_RESPONSE);
       const listener = vi.fn();
       client.on("product:fetched", listener);
 
       await client.getProduct({ handle: "red-rain-coat" });
 
-      expect(listener).toHaveBeenCalledWith(PRODUCT_RESPONSE);
+      expect(listener).toHaveBeenCalledWith(GET_PRODUCT_RESPONSE);
     });
 
     it("returns an error result on HTTP error", async () => {
@@ -270,25 +266,25 @@ describe("Siopa", () => {
 
   describe("getCollection", () => {
     it("fetches a collection by handle and returns data", async () => {
-      mockFetchSuccess(COLLECTION_RESPONSE);
+      mockFetchSuccess(GET_COLLECTION_RESPONSE);
 
-      const result = await client.getCollection({ handle: "summer" });
+      const result = await client.getCollection({ handle: "jackets" });
 
-      expect(result).toEqual({ ok: true, data: COLLECTION_RESPONSE });
+      expect(result).toEqual({ ok: true, data: GET_COLLECTION_RESPONSE });
       expect(globalThis.fetch).toHaveBeenCalledWith(
-        "https://shop.example.com/collections/summer.json",
+        "https://shop.example.com/collections/jackets.json",
         expect.objectContaining({ method: "GET" }),
       );
     });
 
     it("emits collection:fetched on success", async () => {
-      mockFetchSuccess(COLLECTION_RESPONSE);
+      mockFetchSuccess(GET_COLLECTION_RESPONSE);
       const listener = vi.fn();
       client.on("collection:fetched", listener);
 
-      await client.getCollection({ handle: "summer" });
+      await client.getCollection({ handle: "jackets" });
 
-      expect(listener).toHaveBeenCalledWith(COLLECTION_RESPONSE);
+      expect(listener).toHaveBeenCalledWith(GET_COLLECTION_RESPONSE);
     });
 
     it("returns an error result on HTTP error", async () => {
@@ -322,50 +318,50 @@ describe("Siopa", () => {
 
   describe("getCollectionProducts", () => {
     it("fetches collection products by handle and returns data", async () => {
-      mockFetchSuccess(COLLECTION_PRODUCTS_RESPONSE);
+      mockFetchSuccess(GET_COLLECTION_PRODUCTS_RESPONSE);
 
-      const result = await client.getCollectionProducts({ handle: "summer" });
+      const result = await client.getCollectionProducts({ handle: "jackets" });
 
-      expect(result).toEqual({ ok: true, data: COLLECTION_PRODUCTS_RESPONSE });
+      expect(result).toEqual({ ok: true, data: GET_COLLECTION_PRODUCTS_RESPONSE });
       expect(globalThis.fetch).toHaveBeenCalledWith(
-        "https://shop.example.com/collections/summer/products.json",
+        "https://shop.example.com/collections/jackets/products.json",
         expect.objectContaining({ method: "GET" }),
       );
     });
 
     it("includes query params when provided", async () => {
-      mockFetchSuccess(COLLECTION_PRODUCTS_RESPONSE);
+      mockFetchSuccess(GET_COLLECTION_PRODUCTS_WITH_QUERY_PARAMS_RESPONSE);
 
       await client.getCollectionProducts({
-        handle: "summer",
-        params: { limit: 5, page: 2, sort_by: "best-selling" },
+        handle: "jackets",
+        params: { limit: 1, page: 1, sort_by: "created-descending" },
       });
 
       const calledUrl = (globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
       const url = new URL(calledUrl);
 
-      expect(url.pathname).toBe("/collections/summer/products.json");
-      expect(url.searchParams.get("limit")).toBe("5");
-      expect(url.searchParams.get("page")).toBe("2");
-      expect(url.searchParams.get("sort_by")).toBe("best-selling");
+      expect(url.pathname).toBe("/collections/jackets/products.json");
+      expect(url.searchParams.get("limit")).toBe("1");
+      expect(url.searchParams.get("page")).toBe("1");
+      expect(url.searchParams.get("sort_by")).toBe("created-descending");
     });
 
     it("omits query string when no params are provided", async () => {
-      mockFetchSuccess(COLLECTION_PRODUCTS_RESPONSE);
+      mockFetchSuccess(GET_COLLECTION_PRODUCTS_RESPONSE);
 
-      await client.getCollectionProducts({ handle: "summer" });
+      await client.getCollectionProducts({ handle: "jackets" });
 
       expect(globalThis.fetch).toHaveBeenCalledWith(
-        "https://shop.example.com/collections/summer/products.json",
+        "https://shop.example.com/collections/jackets/products.json",
         expect.objectContaining({ method: "GET" }),
       );
     });
 
     it("preserves limit and page when set to 0", async () => {
-      mockFetchSuccess(COLLECTION_PRODUCTS_RESPONSE);
+      mockFetchSuccess(GET_COLLECTION_PRODUCTS_RESPONSE);
 
       await client.getCollectionProducts({
-        handle: "summer",
+        handle: "jackets",
         params: { limit: 0, page: 0 },
       });
 
@@ -377,13 +373,13 @@ describe("Siopa", () => {
     });
 
     it("emits collection:products:fetched on success", async () => {
-      mockFetchSuccess(COLLECTION_PRODUCTS_RESPONSE);
+      mockFetchSuccess(GET_COLLECTION_PRODUCTS_RESPONSE);
       const listener = vi.fn();
       client.on("collection:products:fetched", listener);
 
-      await client.getCollectionProducts({ handle: "summer" });
+      await client.getCollectionProducts({ handle: "jackets" });
 
-      expect(listener).toHaveBeenCalledWith(COLLECTION_PRODUCTS_RESPONSE);
+      expect(listener).toHaveBeenCalledWith(GET_COLLECTION_PRODUCTS_RESPONSE);
     });
 
     it("returns an error result on HTTP error", async () => {
@@ -504,11 +500,11 @@ describe("Siopa", () => {
 
   describe("getCart", () => {
     it("fetches cart.js with GET and returns data", async () => {
-      mockFetchSuccess(CART_RESPONSE);
+      mockFetchSuccess(GET_CART_RESPONSE);
 
       const result = await client.getCart();
 
-      expect(result).toEqual({ ok: true, data: CART_RESPONSE });
+      expect(result).toEqual({ ok: true, data: GET_CART_RESPONSE });
       expect(globalThis.fetch).toHaveBeenCalledWith(
         "https://shop.example.com/cart.js",
         expect.objectContaining({ method: "GET" }),
@@ -516,13 +512,13 @@ describe("Siopa", () => {
     });
 
     it("emits cart:fetched on success", async () => {
-      mockFetchSuccess(CART_RESPONSE);
+      mockFetchSuccess(GET_CART_RESPONSE);
       const listener = vi.fn();
       client.on("cart:fetched", listener);
 
       await client.getCart();
 
-      expect(listener).toHaveBeenCalledWith(CART_RESPONSE);
+      expect(listener).toHaveBeenCalledWith(GET_CART_RESPONSE);
     });
 
     it("returns an error result on HTTP error", async () => {
@@ -671,7 +667,7 @@ describe("Siopa", () => {
 
   describe("getProductRecommendations", () => {
     it("builds correct URL with provided params", async () => {
-      mockFetchSuccess(RECOMMENDATIONS_RESPONSE);
+      mockFetchSuccess(GET_PRODUCT_RECOMMENDATIONS_RESPONSE);
 
       await client.getProductRecommendations({
         product_id: "123",
@@ -686,7 +682,7 @@ describe("Siopa", () => {
     });
 
     it("uses default limit=4 and intent=related", async () => {
-      mockFetchSuccess(RECOMMENDATIONS_RESPONSE);
+      mockFetchSuccess(GET_PRODUCT_RECOMMENDATIONS_RESPONSE);
 
       await client.getProductRecommendations({ product_id: "123" });
 
@@ -697,13 +693,13 @@ describe("Siopa", () => {
     });
 
     it("emits product:recommendations:fetched on success", async () => {
-      mockFetchSuccess(RECOMMENDATIONS_RESPONSE);
+      mockFetchSuccess(GET_PRODUCT_RECOMMENDATIONS_RESPONSE);
       const listener = vi.fn();
       client.on("product:recommendations:fetched", listener);
 
       await client.getProductRecommendations({ product_id: "123" });
 
-      expect(listener).toHaveBeenCalledWith(RECOMMENDATIONS_RESPONSE);
+      expect(listener).toHaveBeenCalledWith(GET_PRODUCT_RECOMMENDATIONS_RESPONSE);
     });
   });
 
@@ -711,7 +707,7 @@ describe("Siopa", () => {
 
   describe("searchProducts", () => {
     it("builds URL with default resource params", async () => {
-      mockFetchSuccess(SEARCH_SUGGEST_RESPONSE);
+      mockFetchSuccess(SEARCH_PRODUCTS_RESPONSE);
 
       await client.searchProducts({ q: "rain coat" });
 
@@ -728,7 +724,7 @@ describe("Siopa", () => {
     });
 
     it("includes custom fields param when provided", async () => {
-      mockFetchSuccess(SEARCH_SUGGEST_RESPONSE);
+      mockFetchSuccess(SEARCH_PRODUCTS_RESPONSE);
 
       await client.searchProducts({
         q: "potion",
@@ -748,13 +744,13 @@ describe("Siopa", () => {
     });
 
     it("emits search:suggested on success", async () => {
-      mockFetchSuccess(SEARCH_SUGGEST_RESPONSE);
+      mockFetchSuccess(SEARCH_PRODUCTS_RESPONSE);
       const listener = vi.fn();
       client.on("search:suggested", listener);
 
       await client.searchProducts({ q: "test" });
 
-      expect(listener).toHaveBeenCalledWith(SEARCH_SUGGEST_RESPONSE);
+      expect(listener).toHaveBeenCalledWith(SEARCH_PRODUCTS_RESPONSE);
     });
   });
 
@@ -921,7 +917,7 @@ describe("Siopa", () => {
   describe("constructor", () => {
     it("strips trailing slashes from rootUrl", async () => {
       const c = new Siopa({ ...DEFAULT_OPTIONS, rootUrl: "https://shop.example.com///" });
-      mockFetchSuccess(CART_RESPONSE);
+      mockFetchSuccess(GET_CART_RESPONSE);
 
       await c.getCart();
 
@@ -933,7 +929,7 @@ describe("Siopa", () => {
 
     it("defaults to / when rootUrl is empty", async () => {
       const c = new Siopa({ ...DEFAULT_OPTIONS, rootUrl: "" });
-      mockFetchSuccess(CART_RESPONSE);
+      mockFetchSuccess(GET_CART_RESPONSE);
 
       await c.getCart();
 

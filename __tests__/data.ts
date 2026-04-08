@@ -1,4 +1,11 @@
-export const PRODUCT_RESPONSE = {
+/*
+|--------------------------------------------------
+| getProduct Response
+| Response for GET /products/:handle.json
+|--------------------------------------------------
+*/
+
+export const GET_PRODUCT_RESPONSE = {
   id: 329678821,
   title: "Red Rain Coat",
   handle: "red-rain-coat",
@@ -81,6 +88,12 @@ export const PRODUCT_RESPONSE = {
   url: "/products/red-rain-coat",
 };
 
+/*
+|--------------------------------------------------
+| addToCart Response
+| Response for POST /cart/add.js
+|--------------------------------------------------
+*/
 export const CART_ADD_RESPONSE = {
   items: [
     {
@@ -120,7 +133,14 @@ export const CART_ADD_RESPONSE = {
   ],
 };
 
-export const CART_RESPONSE = {
+/*
+|--------------------------------------------------
+| getCart Response
+| Response for GET /cart.js
+|--------------------------------------------------
+*/
+
+export const GET_CART_RESPONSE = {
   token:
     "Z2NwLXVzLXdlc3QxOjAxSjBQTVk1Sjc5NVFKTjNOVlhLWENXQUI1?key=0d9909213054e22d092152de385763f0",
   note: "Hello!",
@@ -332,6 +352,1337 @@ export const CART_RESPONSE = {
       target_selection: "all",
       target_type: "line_item",
       total_allocated_amount: 224,
+    },
+  ],
+};
+
+/*
+|--------------------------------------------------
+| getProductRecommendations Response
+| Response for GET /recommendations/products.json
+|--------------------------------------------------
+*/
+
+export const GET_PRODUCT_RECOMMENDATIONS_RESPONSE = {
+  products: [
+    {
+      id: 10560078905690,
+      title: "Jordan Flight Women's Knit Gilet",
+      handle: "jordan-flight-womens-knit-gilet",
+      description:
+        "<p>Dropped shoulders and a loose fit give this gilet a boxy feel. Its premium knit fabric features a digital print for a truly distinct look.</p>",
+      published_at: "2025-11-24T13:31:02-05:00",
+      created_at: "2025-11-24T13:31:02-05:00",
+      vendor: "Jordan",
+      type: "Gilet",
+      tags: ["Gilet", "WOMEN"],
+      price: 5999,
+      price_min: 5999,
+      price_max: 5999,
+      available: true,
+      price_varies: false,
+      compare_at_price: 11999,
+      compare_at_price_min: 11999,
+      compare_at_price_max: 11999,
+      compare_at_price_varies: false,
+      variants: [
+        {
+          id: 52836754981210,
+          title: "Default Title",
+          option1: "Default Title",
+          option2: null,
+          option3: null,
+          sku: "scnPu5",
+          requires_shipping: true,
+          taxable: true,
+          featured_image: null,
+          available: true,
+          name: "Jordan Flight Women's Knit Gilet",
+          public_title: null,
+          options: ["Default Title"],
+          price: 5999,
+          weight: 0,
+          compare_at_price: 11999,
+          inventory_management: null,
+          barcode: null,
+          quantity_rule: {
+            min: 1,
+            max: null,
+            increment: 1,
+          },
+          quantity_price_breaks: [],
+          requires_selling_plan: false,
+          selling_plan_allocations: [],
+        },
+      ],
+      images: [
+        "//cdn.shopify.com/s/files/1/0992/6731/4010/files/W_J_FLT_KNIT_VEST_GFX.jpg?v=1764009068",
+      ],
+      featured_image:
+        "//cdn.shopify.com/s/files/1/0992/6731/4010/files/W_J_FLT_KNIT_VEST_GFX.jpg?v=1764009068",
+      options: [
+        {
+          name: "Title",
+          position: 1,
+          values: ["Default Title"],
+        },
+      ],
+      url: "/products/jordan-flight-womens-knit-gilet?pr_prod_strat=collection_fallback&pr_rec_id=192410d29&pr_rec_pid=10560078905690&pr_ref_pid=10560078840154&pr_seq=uniform",
+      media: [
+        {
+          alt: null,
+          id: 56837043421530,
+          position: 1,
+          preview_image: {
+            aspect_ratio: 0.8,
+            height: 1338,
+            width: 1070,
+            src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/W_J_FLT_KNIT_VEST_GFX.jpg?v=1764009068",
+          },
+          aspect_ratio: 0.8,
+          height: 1338,
+          media_type: "image",
+          src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/W_J_FLT_KNIT_VEST_GFX.jpg?v=1764009068",
+          width: 1070,
+        },
+      ],
+      requires_selling_plan: false,
+      selling_plan_groups: [],
+    },
+    {
+      id: 10560078872922,
+      title: "Nike Therma-FIT Swift Women's Running Gilet",
+      handle: "nike-therma-fit-swift-womens-running-gilet",
+      description:
+        "<p>If you're debating whether it's too chilly or breezy to go for a run, take that first step out of the door in this gilet. With heat-regulating tech, you won't be fighting the cold alone. Plus, the loose fit makes for easy layering, so before, during and after your run, you're set to take on cold-weather conditions.</p>",
+      published_at: "2025-11-24T13:31:01-05:00",
+      created_at: "2025-11-24T13:31:01-05:00",
+      vendor: "Nike",
+      type: "Gilet",
+      tags: ["Gilet", "WOMEN"],
+      price: 6649,
+      price_min: 6649,
+      price_max: 6649,
+      available: true,
+      price_varies: false,
+      compare_at_price: 9499,
+      compare_at_price_min: 9499,
+      compare_at_price_max: 9499,
+      compare_at_price_varies: false,
+      variants: [
+        {
+          id: 52836754948442,
+          title: "Default Title",
+          option1: "Default Title",
+          option2: null,
+          option3: null,
+          sku: "o7Nw3o",
+          requires_shipping: true,
+          taxable: true,
+          featured_image: null,
+          available: true,
+          name: "Nike Therma-FIT Swift Women's Running Gilet",
+          public_title: null,
+          options: ["Default Title"],
+          price: 6649,
+          weight: 0,
+          compare_at_price: 9499,
+          inventory_management: null,
+          barcode: null,
+          quantity_rule: {
+            min: 1,
+            max: null,
+            increment: 1,
+          },
+          quantity_price_breaks: [],
+          requires_selling_plan: false,
+          selling_plan_allocations: [],
+        },
+      ],
+      images: [
+        "//cdn.shopify.com/s/files/1/0992/6731/4010/files/W_NK_SWIFT_TF_FILL_VEST.jpg?v=1764009064",
+      ],
+      featured_image:
+        "//cdn.shopify.com/s/files/1/0992/6731/4010/files/W_NK_SWIFT_TF_FILL_VEST.jpg?v=1764009064",
+      options: [
+        {
+          name: "Title",
+          position: 1,
+          values: ["Default Title"],
+        },
+      ],
+      url: "/products/nike-therma-fit-swift-womens-running-gilet?pr_prod_strat=collection_fallback&pr_rec_id=192410d29&pr_rec_pid=10560078872922&pr_ref_pid=10560078840154&pr_seq=uniform",
+      media: [
+        {
+          alt: null,
+          id: 56837043224922,
+          position: 1,
+          preview_image: {
+            aspect_ratio: 0.8,
+            height: 1338,
+            width: 1070,
+            src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/W_NK_SWIFT_TF_FILL_VEST.jpg?v=1764009064",
+          },
+          aspect_ratio: 0.8,
+          height: 1338,
+          media_type: "image",
+          src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/W_NK_SWIFT_TF_FILL_VEST.jpg?v=1764009064",
+          width: 1070,
+        },
+      ],
+      requires_selling_plan: false,
+      selling_plan_groups: [],
+    },
+    {
+      id: 10560078807386,
+      title: "Nike ACG 'Lunar Lake' PrimaLoft® Women's Therma-FIT ADV Loose Hooded Jacket",
+      handle: "nike-acg-lunar-lake-primaloftr-womens-therma-fit-adv-loose-hooded-jacket",
+      description:
+        "<p>Designed to handle the coldest days, this packable jacket helps make it easier for you to venture outside. Durable Ripstop fabric with a water-repellent finish helps you stay dry in wet weather, while lightweight insulation and heat-regulating tech help pack in the warmth.</p>",
+      published_at: "2025-11-24T13:31:00-05:00",
+      created_at: "2025-11-24T13:31:00-05:00",
+      vendor: "ACG",
+      type: "Jacket",
+      tags: ["Jacket", "WOMEN"],
+      price: 25599,
+      price_min: 25599,
+      price_max: 25599,
+      available: true,
+      price_varies: false,
+      compare_at_price: 31999,
+      compare_at_price_min: 31999,
+      compare_at_price_max: 31999,
+      compare_at_price_varies: false,
+      variants: [
+        {
+          id: 52836754882906,
+          title: "Default Title",
+          option1: "Default Title",
+          option2: null,
+          option3: null,
+          sku: "h0X632",
+          requires_shipping: true,
+          taxable: true,
+          featured_image: null,
+          available: true,
+          name: "Nike ACG 'Lunar Lake' PrimaLoft® Women's Therma-FIT ADV Loose Hooded Jacket",
+          public_title: null,
+          options: ["Default Title"],
+          price: 25599,
+          weight: 0,
+          compare_at_price: 31999,
+          inventory_management: null,
+          barcode: null,
+          quantity_rule: {
+            min: 1,
+            max: null,
+            increment: 1,
+          },
+          quantity_price_breaks: [],
+          requires_selling_plan: false,
+          selling_plan_allocations: [],
+        },
+      ],
+      images: [
+        "//cdn.shopify.com/s/files/1/0992/6731/4010/files/W_ACG_TFADV_LUNAR_LAKE_JKT.jpg?v=1764009063",
+      ],
+      featured_image:
+        "//cdn.shopify.com/s/files/1/0992/6731/4010/files/W_ACG_TFADV_LUNAR_LAKE_JKT.jpg?v=1764009063",
+      options: [
+        {
+          name: "Title",
+          position: 1,
+          values: ["Default Title"],
+        },
+      ],
+      url: "/products/nike-acg-lunar-lake-primaloftr-womens-therma-fit-adv-loose-hooded-jacket?pr_prod_strat=collection_fallback&pr_rec_id=192410d29&pr_rec_pid=10560078807386&pr_ref_pid=10560078840154&pr_seq=uniform",
+      media: [
+        {
+          alt: null,
+          id: 56837043061082,
+          position: 1,
+          preview_image: {
+            aspect_ratio: 0.8,
+            height: 1338,
+            width: 1070,
+            src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/W_ACG_TFADV_LUNAR_LAKE_JKT.jpg?v=1764009063",
+          },
+          aspect_ratio: 0.8,
+          height: 1338,
+          media_type: "image",
+          src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/W_ACG_TFADV_LUNAR_LAKE_JKT.jpg?v=1764009063",
+          width: 1070,
+        },
+      ],
+      requires_selling_plan: false,
+      selling_plan_groups: [],
+    },
+    {
+      id: 10560078774618,
+      title: "Nike Sportswear Swoosh Series Women's Therma-FIT Oversized Down Trench Coat",
+      handle: "nike-sportswear-swoosh-series-womens-therma-fit-oversized-down-trench-coat",
+      description:
+        "<p>The classic trench gets a lightweight warm-up as part of the Swoosh Series Collection. Engineered with down insulation and a water-repellent finish, this transitional staple helps keep you comfortable in cool temperatures.</p>",
+      published_at: "2025-11-24T13:30:59-05:00",
+      created_at: "2025-11-24T13:30:59-05:00",
+      vendor: "Nike",
+      type: "Jacket",
+      tags: ["Jacket", "WOMEN"],
+      price: 22499,
+      price_min: 22499,
+      price_max: 22499,
+      available: true,
+      price_varies: false,
+      compare_at_price: 29999,
+      compare_at_price_min: 29999,
+      compare_at_price_max: 29999,
+      compare_at_price_varies: false,
+      variants: [
+        {
+          id: 52836754850138,
+          title: "Default Title",
+          option1: "Default Title",
+          option2: null,
+          option3: null,
+          sku: "1x0kYe",
+          requires_shipping: true,
+          taxable: true,
+          featured_image: null,
+          available: true,
+          name: "Nike Sportswear Swoosh Series Women's Therma-FIT Oversized Down Trench Coat",
+          public_title: null,
+          options: ["Default Title"],
+          price: 22499,
+          weight: 0,
+          compare_at_price: 29999,
+          inventory_management: null,
+          barcode: null,
+          quantity_rule: {
+            min: 1,
+            max: null,
+            increment: 1,
+          },
+          quantity_price_breaks: [],
+          requires_selling_plan: false,
+          selling_plan_allocations: [],
+        },
+      ],
+      images: [
+        "//cdn.shopify.com/s/files/1/0992/6731/4010/files/W_NSW_TF_DWNFL_SWSH_TRENCH.jpg?v=1764009062",
+      ],
+      featured_image:
+        "//cdn.shopify.com/s/files/1/0992/6731/4010/files/W_NSW_TF_DWNFL_SWSH_TRENCH.jpg?v=1764009062",
+      options: [
+        {
+          name: "Title",
+          position: 1,
+          values: ["Default Title"],
+        },
+      ],
+      url: "/products/nike-sportswear-swoosh-series-womens-therma-fit-oversized-down-trench-coat?pr_prod_strat=collection_fallback&pr_rec_id=192410d29&pr_rec_pid=10560078774618&pr_ref_pid=10560078840154&pr_seq=uniform",
+      media: [
+        {
+          alt: null,
+          id: 56837042798938,
+          position: 1,
+          preview_image: {
+            aspect_ratio: 0.8,
+            height: 1338,
+            width: 1070,
+            src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/W_NSW_TF_DWNFL_SWSH_TRENCH.jpg?v=1764009062",
+          },
+          aspect_ratio: 0.8,
+          height: 1338,
+          media_type: "image",
+          src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/W_NSW_TF_DWNFL_SWSH_TRENCH.jpg?v=1764009062",
+          width: 1070,
+        },
+      ],
+      requires_selling_plan: false,
+      selling_plan_groups: [],
+    },
+  ],
+  intent: "related",
+};
+
+/*
+|--------------------------------------------------
+| searchProducts Response
+| Response for GET /search/suggest.json
+|--------------------------------------------------
+*/
+
+export const SEARCH_PRODUCTS_RESPONSE = {
+  resources: {
+    results: {
+      queries: [
+        {
+          url: "/search?q=nike+hyverse\u0026_pos=1\u0026_psq=nike\u0026_ss=e\u0026_v=1.0",
+          text: "nike hyverse",
+          styled_text:
+            "\u003cmark\u003enike\u003c/mark\u003e\u003cspan\u003e hyverse\u003c/span\u003e",
+        },
+        {
+          url: "/search?q=nike+tech+mens\u0026_pos=2\u0026_psq=nike\u0026_ss=e\u0026_v=1.0",
+          text: "nike tech mens",
+          styled_text:
+            "\u003cmark\u003enike\u003c/mark\u003e\u003cspan\u003e tech mens\u003c/span\u003e",
+        },
+        {
+          url: "/search?q=nike+club+mens\u0026_pos=3\u0026_psq=nike\u0026_ss=e\u0026_v=1.0",
+          text: "nike club mens",
+          styled_text:
+            "\u003cmark\u003enike\u003c/mark\u003e\u003cspan\u003e club mens\u003c/span\u003e",
+        },
+        {
+          url: "/search?q=nike+club+fleece+mens\u0026_pos=4\u0026_psq=nike\u0026_ss=e\u0026_v=1.0",
+          text: "nike club fleece mens",
+          styled_text:
+            "\u003cmark\u003enike\u003c/mark\u003e\u003cspan\u003e club fleece mens\u003c/span\u003e",
+        },
+        {
+          url: "/search?q=nike+storm+fit+football\u0026_pos=5\u0026_psq=nike\u0026_ss=e\u0026_v=1.0",
+          text: "nike storm fit football",
+          styled_text:
+            "\u003cmark\u003enike\u003c/mark\u003e\u003cspan\u003e storm fit football\u003c/span\u003e",
+        },
+      ],
+      products: [
+        {
+          available: true,
+          body: "\u003cp\u003eClean meets casual with these classic joggers. Our midweight brushed fleece feels extra soft on the inside and smooth on the outside.\u003c/p\u003e",
+          compare_at_price_max: "54.99",
+          compare_at_price_min: "54.99",
+          handle: "nike-club-mens-joggers",
+          id: 10560077988186,
+          image:
+            "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/M_NK_CLUB_BB_JOGGER.jpg?v=1764009049",
+          price: "32.99",
+          price_max: "32.99",
+          price_min: "32.99",
+          tags: ["Joggers", "MEN"],
+          title: "Nike Club Men's Joggers",
+          type: "Joggers",
+          url: "/products/nike-club-mens-joggers?_pos=1\u0026_psq=nike\u0026_ss=e\u0026_v=1.0",
+          variants: [],
+          vendor: "Nike",
+          featured_image: {
+            alt: "Nike Club Men's Joggers",
+            aspect_ratio: 0.8,
+            height: 1338,
+            url: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/M_NK_CLUB_BB_JOGGER.jpg?v=1764009049",
+            width: 1070,
+          },
+        },
+        {
+          available: true,
+          body: "\u003cp\u003eSay hello to your go-to cotton tee. Slightly dropped shoulder seams and a loose fit make it comfortable enough to wear around the house yet elevated enough to wear out in the city.\u003c/p\u003e",
+          compare_at_price_max: "34.99",
+          compare_at_price_min: "34.99",
+          handle: "nike-sportswear-essential-womens-t-shirt",
+          id: 10560078283098,
+          image:
+            "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/W_NSW_TEE_ESSNTL_LBR.jpg?v=1764009054",
+          price: "26.49",
+          price_max: "26.49",
+          price_min: "26.49",
+          tags: ["T-Shirt", "WOMEN"],
+          title: "Nike Sportswear Essential Women's T-Shirt",
+          type: "T-Shirt",
+          url: "/products/nike-sportswear-essential-womens-t-shirt?_pos=2\u0026_psq=nike\u0026_ss=e\u0026_v=1.0",
+          variants: [],
+          vendor: "Nike",
+          featured_image: {
+            alt: "Nike Sportswear Essential Women's T-Shirt",
+            aspect_ratio: 0.8,
+            height: 1338,
+            url: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/W_NSW_TEE_ESSNTL_LBR.jpg?v=1764009054",
+            width: 1070,
+          },
+        },
+        {
+          available: true,
+          body: "\u003cp\u003eThe Nike Sportswear Club T-Shirt is made with our everyday cotton fabric and a classic fit, for a familiar feel right out of the bag. An embroidered Futura logo on the chest provides a signature Nike look.\u003c/p\u003e",
+          compare_at_price_max: "24.99",
+          compare_at_price_min: "24.99",
+          handle: "nike-sportswear-club-mens-t-shirt",
+          id: 10560077922650,
+          image:
+            "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/M_NSW_CLUB_TEE.jpg?v=1764009049",
+          price: "14.99",
+          price_max: "14.99",
+          price_min: "14.99",
+          tags: ["MEN", "T-Shirt"],
+          title: "Nike Sportswear Club Men's T-Shirt",
+          type: "T-Shirt",
+          url: "/products/nike-sportswear-club-mens-t-shirt?_pos=3\u0026_psq=nike\u0026_ss=e\u0026_v=1.0",
+          variants: [],
+          vendor: "Nike",
+          featured_image: {
+            alt: "Nike Sportswear Club Men's T-Shirt",
+            aspect_ratio: 0.8,
+            height: 1338,
+            url: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/M_NSW_CLUB_TEE.jpg?v=1764009049",
+            width: 1070,
+          },
+        },
+        {
+          available: true,
+          body: "\u003cp\u003eGet a sport-inspired look with this crisp, lightweight jacket. The oversized fit has a little bit more length and plenty of space through the body for easy movement and casual styling.\u003c/p\u003e",
+          compare_at_price_max: "99.99",
+          compare_at_price_min: "99.99",
+          handle: "nike-club-mens-oversized-woven-tracksuit-jacket",
+          id: 10560078741850,
+          image:
+            "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/M_NK_CLUB_WVN_TRK_JKT_OS.jpg?v=1764009061",
+          price: "74.99",
+          price_max: "74.99",
+          price_min: "74.99",
+          tags: ["Jacket", "MEN"],
+          title: "Nike Club Men's Oversized Woven Tracksuit Jacket",
+          type: "Jacket",
+          url: "/products/nike-club-mens-oversized-woven-tracksuit-jacket?_pos=4\u0026_psq=nike\u0026_ss=e\u0026_v=1.0",
+          variants: [],
+          vendor: "Nike",
+          featured_image: {
+            alt: "Nike Club Men's Oversized Woven Tracksuit Jacket",
+            aspect_ratio: 0.8,
+            height: 1338,
+            url: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/M_NK_CLUB_WVN_TRK_JKT_OS.jpg?v=1764009061",
+            width: 1070,
+          },
+        },
+        {
+          available: true,
+          body: "\u003cp\u003eThe Nike Dri-FIT T-Shirt delivers a soft feel, sweat-wicking performance and a great range of motion to get you through your workout in total comfort.\u003c/p\u003e",
+          compare_at_price_max: "29.99",
+          compare_at_price_min: "29.99",
+          handle: "nike-dri-fit-mens-fitness-t-shirt",
+          id: 10560078152026,
+          image:
+            "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/M_NK_DF_TEE_DFC_CREW_SOLID.jpg?v=1764009053",
+          price: "20.99",
+          price_max: "20.99",
+          price_min: "20.99",
+          tags: ["MEN", "T-Shirt"],
+          title: "Nike Dri-FIT Men's Fitness T-Shirt",
+          type: "T-Shirt",
+          url: "/products/nike-dri-fit-mens-fitness-t-shirt?_pos=5\u0026_psq=nike\u0026_ss=e\u0026_v=1.0",
+          variants: [],
+          vendor: "Nike",
+          featured_image: {
+            alt: "Nike Dri-FIT Men's Fitness T-Shirt",
+            aspect_ratio: 0.8,
+            height: 1338,
+            url: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/M_NK_DF_TEE_DFC_CREW_SOLID.jpg?v=1764009053",
+            width: 1070,
+          },
+        },
+      ],
+      collections: [],
+      pages: [],
+    },
+  },
+};
+
+/*
+|--------------------------------------------------
+| getCollection Response
+| Response for GET /collections/:handle.json
+|--------------------------------------------------
+*/
+
+export const GET_COLLECTION_RESPONSE = {
+  collection: {
+    id: 664142512474,
+    title: "Jackets",
+    handle: "jackets",
+    description:
+      "<p>Voluptate dolor ullamco ad do aute non pariatur sint cillum amet velit exercitation aute. Enim qui ipsum occaecat. Esse id reprehenderit Lorem id non exercitation culpa anim in in ut deserunt. Qui eiusmod excepteur adipisicing laboris tempor.</p>",
+    published_at: "2025-11-21T09:59:32-05:00",
+    updated_at: "2025-11-24T13:31:31-05:00",
+    image: null,
+    products_count: 13,
+  },
+};
+
+/*
+|--------------------------------------------------
+| getCollectionProducts Response
+| Response for GET /collections/:handle/products.json
+|--------------------------------------------------
+*/
+
+export const GET_COLLECTION_PRODUCTS_RESPONSE = {
+  products: [
+    {
+      id: 10560078840154,
+      title: "Nike Sportswear Classic Wovens Women's Loose UV Hooded Jacket",
+      handle: "nike-sportswear-classic-wovens-womens-loose-uv-hooded-jacket",
+      body_html:
+        "<p>With a classic sport look and a lightweight feel, this jacket is ready for whatever the day throws at you. Dropped shoulders and an oversized fit give you a casual feel that you can rock all day.</p>",
+      published_at: "2025-11-24T13:31:01-05:00",
+      created_at: "2025-11-24T13:31:01-05:00",
+      updated_at: "2026-04-08T05:15:16-04:00",
+      vendor: "Nike",
+      product_type: "Jacket",
+      tags: ["Jacket", "WOMEN"],
+      variants: [
+        {
+          id: 52836754915674,
+          title: "Default Title",
+          option1: "Default Title",
+          option2: null,
+          option3: null,
+          sku: "kdeTdq",
+          requires_shipping: true,
+          taxable: true,
+          featured_image: null,
+          available: true,
+          price: "48.99",
+          grams: 0,
+          compare_at_price: "64.99",
+          position: 1,
+          product_id: 10560078840154,
+          created_at: "2025-11-24T13:31:01-05:00",
+          updated_at: "2026-04-08T05:15:16-04:00",
+        },
+      ],
+      images: [
+        {
+          id: 67909085692250,
+          created_at: "2025-11-24T13:31:01-05:00",
+          position: 1,
+          updated_at: "2025-11-24T13:31:03-05:00",
+          product_id: 10560078840154,
+          variant_ids: [],
+          src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/W_NSW_ESSNTL_UV_WVN_JKT_HD.jpg?v=1764009063",
+          width: 1070,
+          height: 1338,
+        },
+      ],
+      options: [
+        {
+          name: "Title",
+          position: 1,
+          values: ["Default Title"],
+        },
+      ],
+    },
+    {
+      id: 10560078807386,
+      title: "Nike ACG 'Lunar Lake' PrimaLoft® Women's Therma-FIT ADV Loose Hooded Jacket",
+      handle: "nike-acg-lunar-lake-primaloftr-womens-therma-fit-adv-loose-hooded-jacket",
+      body_html:
+        "<p>Designed to handle the coldest days, this packable jacket helps make it easier for you to venture outside. Durable Ripstop fabric with a water-repellent finish helps you stay dry in wet weather, while lightweight insulation and heat-regulating tech help pack in the warmth.</p>",
+      published_at: "2025-11-24T13:31:00-05:00",
+      created_at: "2025-11-24T13:31:00-05:00",
+      updated_at: "2026-04-08T05:15:16-04:00",
+      vendor: "ACG",
+      product_type: "Jacket",
+      tags: ["Jacket", "WOMEN"],
+      variants: [
+        {
+          id: 52836754882906,
+          title: "Default Title",
+          option1: "Default Title",
+          option2: null,
+          option3: null,
+          sku: "h0X632",
+          requires_shipping: true,
+          taxable: true,
+          featured_image: null,
+          available: true,
+          price: "255.99",
+          grams: 0,
+          compare_at_price: "319.99",
+          position: 1,
+          product_id: 10560078807386,
+          created_at: "2025-11-24T13:31:00-05:00",
+          updated_at: "2026-04-08T05:15:16-04:00",
+        },
+      ],
+      images: [
+        {
+          id: 67909085659482,
+          created_at: "2025-11-24T13:31:00-05:00",
+          position: 1,
+          updated_at: "2025-11-24T13:31:03-05:00",
+          product_id: 10560078807386,
+          variant_ids: [],
+          src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/W_ACG_TFADV_LUNAR_LAKE_JKT.jpg?v=1764009063",
+          width: 1070,
+          height: 1338,
+        },
+      ],
+      options: [
+        {
+          name: "Title",
+          position: 1,
+          values: ["Default Title"],
+        },
+      ],
+    },
+    {
+      id: 10560078774618,
+      title: "Nike Sportswear Swoosh Series Women's Therma-FIT Oversized Down Trench Coat",
+      handle: "nike-sportswear-swoosh-series-womens-therma-fit-oversized-down-trench-coat",
+      body_html:
+        "<p>The classic trench gets a lightweight warm-up as part of the Swoosh Series Collection. Engineered with down insulation and a water-repellent finish, this transitional staple helps keep you comfortable in cool temperatures.</p>",
+      published_at: "2025-11-24T13:30:59-05:00",
+      created_at: "2025-11-24T13:30:59-05:00",
+      updated_at: "2026-04-08T05:15:16-04:00",
+      vendor: "Nike",
+      product_type: "Jacket",
+      tags: ["Jacket", "WOMEN"],
+      variants: [
+        {
+          id: 52836754850138,
+          title: "Default Title",
+          option1: "Default Title",
+          option2: null,
+          option3: null,
+          sku: "1x0kYe",
+          requires_shipping: true,
+          taxable: true,
+          featured_image: null,
+          available: true,
+          price: "224.99",
+          grams: 0,
+          compare_at_price: "299.99",
+          position: 1,
+          product_id: 10560078774618,
+          created_at: "2025-11-24T13:30:59-05:00",
+          updated_at: "2026-04-08T05:15:16-04:00",
+        },
+      ],
+      images: [
+        {
+          id: 67909085364570,
+          created_at: "2025-11-24T13:30:59-05:00",
+          position: 1,
+          updated_at: "2025-11-24T13:31:02-05:00",
+          product_id: 10560078774618,
+          variant_ids: [],
+          src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/W_NSW_TF_DWNFL_SWSH_TRENCH.jpg?v=1764009062",
+          width: 1070,
+          height: 1338,
+        },
+      ],
+      options: [
+        {
+          name: "Title",
+          position: 1,
+          values: ["Default Title"],
+        },
+      ],
+    },
+    {
+      id: 10560078741850,
+      title: "Nike Club Men's Oversized Woven Tracksuit Jacket",
+      handle: "nike-club-mens-oversized-woven-tracksuit-jacket",
+      body_html:
+        "<p>Get a sport-inspired look with this crisp, lightweight jacket. The oversized fit has a little bit more length and plenty of space through the body for easy movement and casual styling.</p>",
+      published_at: "2025-11-24T13:30:59-05:00",
+      created_at: "2025-11-24T13:30:59-05:00",
+      updated_at: "2026-04-08T05:15:16-04:00",
+      vendor: "Nike",
+      product_type: "Jacket",
+      tags: ["Jacket", "MEN"],
+      variants: [
+        {
+          id: 52836754817370,
+          title: "Default Title",
+          option1: "Default Title",
+          option2: null,
+          option3: null,
+          sku: "Hr9Uui",
+          requires_shipping: true,
+          taxable: true,
+          featured_image: null,
+          available: true,
+          price: "74.99",
+          grams: 0,
+          compare_at_price: "99.99",
+          position: 1,
+          product_id: 10560078741850,
+          created_at: "2025-11-24T13:30:59-05:00",
+          updated_at: "2026-04-08T05:15:16-04:00",
+        },
+      ],
+      images: [
+        {
+          id: 67909085200730,
+          created_at: "2025-11-24T13:30:59-05:00",
+          position: 1,
+          updated_at: "2025-11-24T13:31:01-05:00",
+          product_id: 10560078741850,
+          variant_ids: [],
+          src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/M_NK_CLUB_WVN_TRK_JKT_OS.jpg?v=1764009061",
+          width: 1070,
+          height: 1338,
+        },
+      ],
+      options: [
+        {
+          name: "Title",
+          position: 1,
+          values: ["Default Title"],
+        },
+      ],
+    },
+    {
+      id: 10560078709082,
+      title:
+        "Liverpool F.C. Strike Windrunner PrimaLoft® Men's Nike Storm-FIT Football Hooded Parka",
+      handle: "liverpool-fc-strike-windrunner-primaloftr-mens-nike-storm-fit-football-hooded-parka",
+      body_html:
+        "<p>With design details specifically tailored for football's rising stars, this Liverpool jacket's Storm-FIT tech and PrimaLoft® insulation help keep you warm and dry for whatever the weather throws at you.</p>",
+      published_at: "2025-11-24T13:30:58-05:00",
+      created_at: "2025-11-24T13:30:58-05:00",
+      updated_at: "2026-04-08T05:15:16-04:00",
+      vendor: "Nike",
+      product_type: "Jacket",
+      tags: ["Jacket", "MEN"],
+      variants: [
+        {
+          id: 52836754784602,
+          title: "Default Title",
+          option1: "Default Title",
+          option2: null,
+          option3: null,
+          sku: "fVhUxu",
+          requires_shipping: true,
+          taxable: true,
+          featured_image: null,
+          available: true,
+          price: "114.99",
+          grams: 0,
+          compare_at_price: "229.99",
+          position: 1,
+          product_id: 10560078709082,
+          created_at: "2025-11-24T13:30:58-05:00",
+          updated_at: "2026-04-08T05:15:16-04:00",
+        },
+      ],
+      images: [
+        {
+          id: 67909085102426,
+          created_at: "2025-11-24T13:30:58-05:00",
+          position: 1,
+          updated_at: "2025-11-24T13:31:01-05:00",
+          product_id: 10560078709082,
+          variant_ids: [],
+          src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/LFC_MNK_SF_WRPLSTRKFLDHDPRKA3R.jpg?v=1764009061",
+          width: 1070,
+          height: 1338,
+        },
+      ],
+      options: [
+        {
+          name: "Title",
+          position: 1,
+          values: ["Default Title"],
+        },
+      ],
+    },
+    {
+      id: 10560078610778,
+      title: "Nike Sportswear Air Max Men's Woven Jacket",
+      handle: "nike-sportswear-air-max-mens-woven-jacket",
+      body_html:
+        "<p>Zip up and get out in this roomy woven jacket. Featuring durable, sweat-wicking fabric and a spacious hood, it provides style, comfort and coverage whenever you need.</p>",
+      published_at: "2025-11-24T13:30:57-05:00",
+      created_at: "2025-11-24T13:30:57-05:00",
+      updated_at: "2026-04-08T05:15:16-04:00",
+      vendor: "Nike",
+      product_type: "Jacket",
+      tags: ["Jacket", "MEN"],
+      variants: [
+        {
+          id: 52836754686298,
+          title: "Default Title",
+          option1: "Default Title",
+          option2: null,
+          option3: null,
+          sku: "vmtvi8",
+          requires_shipping: true,
+          taxable: true,
+          featured_image: null,
+          available: true,
+          price: "59.99",
+          grams: 0,
+          compare_at_price: "119.99",
+          position: 1,
+          product_id: 10560078610778,
+          created_at: "2025-11-24T13:30:58-05:00",
+          updated_at: "2026-04-08T05:15:16-04:00",
+        },
+      ],
+      images: [
+        {
+          id: 67909085036890,
+          created_at: "2025-11-24T13:30:58-05:00",
+          position: 1,
+          updated_at: "2025-11-24T13:31:00-05:00",
+          product_id: 10560078610778,
+          variant_ids: [],
+          src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/M_NSW_AIR_MAX_WVN_JACKET.jpg?v=1764009060",
+          width: 1070,
+          height: 1338,
+        },
+      ],
+      options: [
+        {
+          name: "Title",
+          position: 1,
+          values: ["Default Title"],
+        },
+      ],
+    },
+    {
+      id: 10560078512474,
+      title: "Jordan Renegade Men's Jacket",
+      handle: "jordan-renegade-mens-jacket",
+      body_html:
+        "<p>The bomber has always been the jacket of high flyers, and the Renegade is Jordan's distinct take on the iconic style. Made from a smooth, water-repellent woven fabric, this roomy jacket is filled for lightweight warmth. A diamond-shaped pocket on the sleeve adds signature Jordan style.</p>",
+      published_at: "2025-11-24T13:30:56-05:00",
+      created_at: "2025-11-24T13:30:56-05:00",
+      updated_at: "2026-04-08T05:15:16-04:00",
+      vendor: "Jordan",
+      product_type: "Jacket",
+      tags: ["Jacket", "MEN"],
+      variants: [
+        {
+          id: 52836754587994,
+          title: "Default Title",
+          option1: "Default Title",
+          option2: null,
+          option3: null,
+          sku: "0IobpY",
+          requires_shipping: true,
+          taxable: true,
+          featured_image: null,
+          available: true,
+          price: "149.99",
+          grams: 0,
+          compare_at_price: "249.99",
+          position: 1,
+          product_id: 10560078512474,
+          created_at: "2025-11-24T13:30:56-05:00",
+          updated_at: "2026-04-08T05:15:16-04:00",
+        },
+      ],
+      images: [
+        {
+          id: 67909084774746,
+          created_at: "2025-11-24T13:30:56-05:00",
+          position: 1,
+          updated_at: "2025-11-24T13:31:02-05:00",
+          product_id: 10560078512474,
+          variant_ids: [],
+          src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/M_J_RNGD_JACKET.jpg?v=1764009062",
+          width: 1070,
+          height: 1338,
+        },
+      ],
+      options: [
+        {
+          name: "Title",
+          position: 1,
+          values: ["Default Title"],
+        },
+      ],
+    },
+    {
+      id: 10560078479706,
+      title: "Air Jordan Men's Puffer Jacket",
+      handle: "air-jordan-mens-puffer-jacket",
+      body_html:
+        "<p>When the temps start to dip, it's time to break out the puffer. This one features an allover print inspired by an iconic MJ poster and is filled with down insulation for cosy warmth. Slip it on and stay toasty.</p>",
+      published_at: "2025-11-24T13:30:56-05:00",
+      created_at: "2025-11-24T13:30:56-05:00",
+      updated_at: "2026-04-08T05:15:16-04:00",
+      vendor: "Jordan",
+      product_type: "Jacket",
+      tags: ["Jacket", "MEN"],
+      variants: [
+        {
+          id: 52836754555226,
+          title: "Default Title",
+          option1: "Default Title",
+          option2: null,
+          option3: null,
+          sku: "o28Vyw",
+          requires_shipping: true,
+          taxable: true,
+          featured_image: null,
+          available: true,
+          price: "299.99",
+          grams: 0,
+          compare_at_price: "499.99",
+          position: 1,
+          product_id: 10560078479706,
+          created_at: "2025-11-24T13:30:56-05:00",
+          updated_at: "2026-04-08T05:15:16-04:00",
+        },
+      ],
+      images: [
+        {
+          id: 67909084610906,
+          created_at: "2025-11-24T13:30:56-05:00",
+          position: 1,
+          updated_at: "2025-11-24T13:31:03-05:00",
+          product_id: 10560078479706,
+          variant_ids: [],
+          src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/M_J_AIR_JDN_PG_PUFFER_JKT.jpg?v=1764009063",
+          width: 1070,
+          height: 1338,
+        },
+      ],
+      options: [
+        {
+          name: "Title",
+          position: 1,
+          values: ["Default Title"],
+        },
+      ],
+    },
+    {
+      id: 10560078446938,
+      title: "Nike Unlimited Men's Repel Hooded Versatile Jacket",
+      handle: "nike-unlimited-mens-repel-hooded-versatile-jacket",
+      body_html:
+        "<p>Built for running, training and yoga, our Unlimited collection helps keep you moving throughout the year, thanks to its premium materials and innovative features. This breathable jacket is built around super-stretchy fabric that moves with you from box jumps to back bends. Durable water-repellent coating helps keep you prepared for unexpected showers. Plus, it packs down neatly into a slim, built-in pouch for maximum convenience and space saving in your gym bag.</p>",
+      published_at: "2025-11-24T13:30:55-05:00",
+      created_at: "2025-11-24T13:30:55-05:00",
+      updated_at: "2026-04-08T05:15:16-04:00",
+      vendor: "Nike",
+      product_type: "Jacket",
+      tags: ["Jacket", "MEN"],
+      variants: [
+        {
+          id: 52836754522458,
+          title: "Default Title",
+          option1: "Default Title",
+          option2: null,
+          option3: null,
+          sku: "UFntkn",
+          requires_shipping: true,
+          taxable: true,
+          featured_image: null,
+          available: true,
+          price: "53.99",
+          grams: 0,
+          compare_at_price: "89.99",
+          position: 1,
+          product_id: 10560078446938,
+          created_at: "2025-11-24T13:30:55-05:00",
+          updated_at: "2026-04-08T05:15:16-04:00",
+        },
+      ],
+      images: [
+        {
+          id: 67909084447066,
+          created_at: "2025-11-24T13:30:55-05:00",
+          position: 1,
+          updated_at: "2025-11-24T13:30:57-05:00",
+          product_id: 10560078446938,
+          variant_ids: [],
+          src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/M_NK_RPL_UNLIMITED_JKT.jpg?v=1764009057",
+          width: 1070,
+          height: 1338,
+        },
+      ],
+      options: [
+        {
+          name: "Title",
+          position: 1,
+          values: ["Default Title"],
+        },
+      ],
+    },
+    {
+      id: 10560078119258,
+      title: "Nike Storm-FIT Swift Women's Running Jacket",
+      handle: "nike-storm-fit-swift-womens-running-jacket",
+      body_html:
+        "<p>Feel ready for whatever nature throws at you. Running, walking or hiking, this hooded jacket is designed with Storm-FIT tech to be lightweight, breathable and resistant to the elements—so the weather doesn't have to stop you. An oversized fit makes layering easy and the bungee cord at the hem allows you to customise so you can stay comfortable as you move.</p>",
+      published_at: "2025-11-24T13:30:49-05:00",
+      created_at: "2025-11-24T13:30:49-05:00",
+      updated_at: "2026-04-08T05:15:16-04:00",
+      vendor: "Nike",
+      product_type: "Jacket",
+      tags: ["Jacket", "WOMEN"],
+      variants: [
+        {
+          id: 52836754194778,
+          title: "Default Title",
+          option1: "Default Title",
+          option2: null,
+          option3: null,
+          sku: "KfEov1",
+          requires_shipping: true,
+          taxable: true,
+          featured_image: null,
+          available: true,
+          price: "83.99",
+          grams: 0,
+          compare_at_price: "139.99",
+          position: 1,
+          product_id: 10560078119258,
+          created_at: "2025-11-24T13:30:49-05:00",
+          updated_at: "2026-04-08T05:15:16-04:00",
+        },
+      ],
+      images: [
+        {
+          id: 67909082317146,
+          created_at: "2025-11-24T13:30:49-05:00",
+          position: 1,
+          updated_at: "2025-11-24T13:30:52-05:00",
+          product_id: 10560078119258,
+          variant_ids: [],
+          src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/W_NK_SWIFT_SF_JKT.jpg?v=1764009052",
+          width: 1070,
+          height: 1338,
+        },
+      ],
+      options: [
+        {
+          name: "Title",
+          position: 1,
+          values: ["Default Title"],
+        },
+      ],
+    },
+    {
+      id: 10560078086490,
+      title: "Nike Sportswear Classic Puffer Women's Therma-FIT Loose Hooded Jacket",
+      handle: "nike-sportswear-classic-puffer-womens-therma-fit-loose-hooded-jacket",
+      body_html:
+        "<p>Take on cold days in a jacket designed to keep you cosy. Loose enough for layering, its synthetic fill adds lofted warmth while a water-repellent finish helps you stay dry.</p>",
+      published_at: "2025-11-24T13:30:49-05:00",
+      created_at: "2025-11-24T13:30:49-05:00",
+      updated_at: "2026-04-08T05:15:16-04:00",
+      vendor: "Nike",
+      product_type: "Jacket",
+      tags: ["Jacket", "WOMEN"],
+      variants: [
+        {
+          id: 52836754162010,
+          title: "Default Title",
+          option1: "Default Title",
+          option2: null,
+          option3: null,
+          sku: "qdZzj_",
+          requires_shipping: true,
+          taxable: true,
+          featured_image: null,
+          available: true,
+          price: "84.49",
+          grams: 0,
+          compare_at_price: "129.99",
+          position: 1,
+          product_id: 10560078086490,
+          created_at: "2025-11-24T13:30:49-05:00",
+          updated_at: "2026-04-08T05:15:16-04:00",
+        },
+      ],
+      images: [
+        {
+          id: 67909082120538,
+          created_at: "2025-11-24T13:30:49-05:00",
+          position: 1,
+          updated_at: "2025-11-24T13:30:52-05:00",
+          product_id: 10560078086490,
+          variant_ids: [],
+          src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/W_NSW_TF_SYNFL_NK_CLSC_PFR.jpg?v=1764009052",
+          width: 1070,
+          height: 1338,
+        },
+      ],
+      options: [
+        {
+          name: "Title",
+          position: 1,
+          values: ["Default Title"],
+        },
+      ],
+    },
+    {
+      id: 10560078053722,
+      title: "Nike Tech Men's Fleece Windrunner Full-Zip Jacket",
+      handle: "nike-tech-mens-fleece-windrunner-full-zip-jacket",
+      body_html:
+        "<p>Iconic Nike Windrunner style gets an injection of premium comfort with our smooth-on-both-sides fleece. It's paired with a relaxed fit and technical details, like a signature tape-reinforced Tech pocket on the sleeve and binding on the hem and cuffs.</p>",
+      published_at: "2025-11-24T13:30:48-05:00",
+      created_at: "2025-11-24T13:30:48-05:00",
+      updated_at: "2026-04-08T05:15:16-04:00",
+      vendor: "Nike",
+      product_type: "Jacket",
+      tags: ["Jacket", "MEN"],
+      variants: [
+        {
+          id: 52836754129242,
+          title: "Default Title",
+          option1: "Default Title",
+          option2: null,
+          option3: null,
+          sku: "Ft2RGJ",
+          requires_shipping: true,
+          taxable: true,
+          featured_image: null,
+          available: true,
+          price: "89.99",
+          grams: 0,
+          compare_at_price: "119.99",
+          position: 1,
+          product_id: 10560078053722,
+          created_at: "2025-11-24T13:30:48-05:00",
+          updated_at: "2026-04-08T05:15:16-04:00",
+        },
+      ],
+      images: [
+        {
+          id: 67909081465178,
+          created_at: "2025-11-24T13:30:48-05:00",
+          position: 1,
+          updated_at: "2025-11-24T13:30:51-05:00",
+          product_id: 10560078053722,
+          variant_ids: [],
+          src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/M_NK_TCH_FLC_FZ_WR_HOODIE.jpg?v=1764009051",
+          width: 1070,
+          height: 1338,
+        },
+      ],
+      options: [
+        {
+          name: "Title",
+          position: 1,
+          values: ["Default Title"],
+        },
+      ],
+    },
+    {
+      id: 10560078020954,
+      title: "Jordan Brooklyn Men's Therma-FIT Puffer Jacket",
+      handle: "jordan-brooklyn-mens-therma-fit-puffer-jacket",
+      body_html:
+        "<p>This roomy puffer comes ready for harsh weather. It's made from a woven, water-repellent outer shell and packed with synthetic insulation and Nike Therma-FIT technology for cosy warmth.</p>",
+      published_at: "2025-11-24T13:30:47-05:00",
+      created_at: "2025-11-24T13:30:47-05:00",
+      updated_at: "2026-04-08T05:15:16-04:00",
+      vendor: "Jordan",
+      product_type: "Jacket",
+      tags: ["Jacket", "MEN"],
+      variants: [
+        {
+          id: 52836754096474,
+          title: "Default Title",
+          option1: "Default Title",
+          option2: null,
+          option3: null,
+          sku: "aeMCQu",
+          requires_shipping: true,
+          taxable: true,
+          featured_image: null,
+          available: true,
+          price: "138.99",
+          grams: 0,
+          compare_at_price: "184.99",
+          position: 1,
+          product_id: 10560078020954,
+          created_at: "2025-11-24T13:30:48-05:00",
+          updated_at: "2026-04-08T05:15:16-04:00",
+        },
+      ],
+      images: [
+        {
+          id: 67909081104730,
+          created_at: "2025-11-24T13:30:48-05:00",
+          position: 1,
+          updated_at: "2025-11-24T13:30:54-05:00",
+          product_id: 10560078020954,
+          variant_ids: [],
+          src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/M_J_BRK_PUFFER_JKT.jpg?v=1764009054",
+          width: 1070,
+          height: 1338,
+        },
+      ],
+      options: [
+        {
+          name: "Title",
+          position: 1,
+          values: ["Default Title"],
+        },
+      ],
+    },
+  ],
+};
+
+/*
+|--------------------------------------------------
+| getCollectionProducts with query params Response
+| Response for GET /collections/:handle/products.json?limit=1&page=1&sort_by=created-descending
+|--------------------------------------------------
+*/
+
+export const GET_COLLECTION_PRODUCTS_WITH_QUERY_PARAMS_RESPONSE = {
+  products: [
+    {
+      id: 10560078840154,
+      title: "Nike Sportswear Classic Wovens Women's Loose UV Hooded Jacket",
+      handle: "nike-sportswear-classic-wovens-womens-loose-uv-hooded-jacket",
+      body_html:
+        "<p>With a classic sport look and a lightweight feel, this jacket is ready for whatever the day throws at you. Dropped shoulders and an oversized fit give you a casual feel that you can rock all day.</p>",
+      published_at: "2025-11-24T13:31:01-05:00",
+      created_at: "2025-11-24T13:31:01-05:00",
+      updated_at: "2026-04-08T05:14:21-04:00",
+      vendor: "Nike",
+      product_type: "Jacket",
+      tags: ["Jacket", "WOMEN"],
+      variants: [
+        {
+          id: 52836754915674,
+          title: "Default Title",
+          option1: "Default Title",
+          option2: null,
+          option3: null,
+          sku: "kdeTdq",
+          requires_shipping: true,
+          taxable: true,
+          featured_image: null,
+          available: true,
+          price: "48.99",
+          grams: 0,
+          compare_at_price: "64.99",
+          position: 1,
+          product_id: 10560078840154,
+          created_at: "2025-11-24T13:31:01-05:00",
+          updated_at: "2026-04-08T05:14:21-04:00",
+        },
+      ],
+      images: [
+        {
+          id: 67909085692250,
+          created_at: "2025-11-24T13:31:01-05:00",
+          position: 1,
+          updated_at: "2025-11-24T13:31:03-05:00",
+          product_id: 10560078840154,
+          variant_ids: [],
+          src: "https://cdn.shopify.com/s/files/1/0992/6731/4010/files/W_NSW_ESSNTL_UV_WVN_JKT_HD.jpg?v=1764009063",
+          width: 1070,
+          height: 1338,
+        },
+      ],
+      options: [
+        {
+          name: "Title",
+          position: 1,
+          values: ["Default Title"],
+        },
+      ],
     },
   ],
 };
