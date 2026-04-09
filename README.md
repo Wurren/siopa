@@ -14,6 +14,37 @@ $$$$$$$  |$$ |\$$$$$$  |$$$$$$$  |\$$$$$$$ |
 
 A lightweight, fully-typed TypeScript wrapper around Shopify's [Storefront Ajax API](https://shopify.dev/docs/api/ajax) for use in Shopify themes.
 
+## Table of contents
+
+- [Installation](#installation)
+- [Initialization](#initialization)
+- [API](#api)
+  - [`getProduct`](#getproduct)
+  - [`getCollection`](#getcollection)
+  - [`getCollectionProducts`](#getcollectionproducts)
+  - [`getCart`](#getcart)
+  - [`addToCart`](#addtocart)
+  - [`updateLineItem`](#updatelineitem)
+  - [`removeLineItem`](#removelineitem)
+  - [`removeLineItems`](#removelineitems)
+  - [`clearCart`](#clearcart)
+  - [`getProductRecommendations`](#getproductrecommendations)
+  - [`searchProducts`](#searchproducts)
+  - [`getSections`](#getsections)
+  - [`formatPrice`](#formatprice)
+- [Events](#events)
+  - [`on`](#on)
+  - [`once`](#once)
+  - [`removeAllListeners`](#removealllisteners)
+  - [`onThemeEvent`](#onthemeevent)
+  - [Available theme events](#available-theme-events)
+  - [Available events](#available-events)
+  - [Safety](#safety)
+- [Error handling](#error-handling)
+- [Types](#types)
+- [Development](#development)
+- [License](#license)
+
 ## Installation
 
 ```bash
@@ -49,11 +80,11 @@ const client = new Siopa({
 
 ## API
 
-Every method returns a `Promise<ApiResult<T>>` -- a discriminated union you can narrow with a simple `if` check. See [Error Handling](#error-handling) for details.
+Every method returns a `Promise<ApiResult<T>>` -- a discriminated union you can narrow with a simple `if` check. See [Error handling](#error-handling) for details.
 
 ### `getProduct`
 
-Fetch a single product by its handle.
+Fetch a single product by its handle. Requests `GET {rootUrl}/products/{handle}.json` (same JSON shape as Shopify’s documented [`products/{handle}.js`](https://shopify.dev/docs/api/ajax/reference/product) endpoint).
 
 ```ts
 const result = await client.getProduct({ handle: "classic-leather-jacket" });
@@ -169,7 +200,7 @@ When a `FormData` instance is passed, the request is sent as `multipart/form-dat
 
 ### `updateLineItem`
 
-Update the quantity (or properties) of a line item by its key.
+Update the quantity (or properties) of a line item by its key. Optional `selling_plan` and `properties` follow the same shape as in `addToCart` line items.
 
 ```ts
 const result = await client.updateLineItem({
@@ -178,9 +209,18 @@ const result = await client.updateLineItem({
 });
 ```
 
+```ts
+const result = await client.updateLineItem({
+  id: "c32b1a8b-1c5e-4e3a-9f8d-2a6b7c8d9e0f:1234567890",
+  quantity: 1,
+  selling_plan: 123456,
+  properties: { _note: "Gift wrap" },
+});
+```
+
 ### `removeLineItem`
 
-Remove a single line item from the cart by its key.
+Remove a single line item from the cart by its key. `id` may be a string or number (variant id style keys remain strings).
 
 ```ts
 const result = await client.removeLineItem({
@@ -301,7 +341,7 @@ const result = await client.getSections({
 | `ids`     | `string[]` | (required)  |
 | `path`    | `string`   | `"/"`       |
 
-A maximum of 5 section IDs can be requested at once. Sections that fail to render are returned as `null` in the response.
+A maximum of 5 section IDs can be requested at once. Sections that fail to render are returned as `null` in the response (see the `Section` type).
 
 ### `formatPrice`
 
@@ -403,11 +443,12 @@ unsubscribe();
 | `collection:products:fetched`     | `{ products: Product[] }`       | `getCollectionProducts`             |
 | `cart:fetched`                    | `Cart`                          | `getCart`                           |
 | `cart:added`                      | `CartAdd`                       | `addToCart`                         |
-| `cart:changed`                    | `CartChange`                    | `updateLineItem`                    |
+| `cart:updated`                    | `CartChange`                    | `updateLineItem`                    |
 | `cart:removed`                    | `CartChange`                    | `removeLineItem`, `removeLineItems` |
 | `cart:cleared`                    | `CartClear`                     | `clearCart`                         |
 | `search:suggested`                | `Suggest`                       | `searchProducts`                    |
-| `section:fetched`                 | `Record<string, string \| null>` | `getSections`                      |
+| `section:fetched`                 | `Section`                       | `getSections`                       |
+| `request:loading`                 | `boolean`                       | Any method (true before fetch, false after) |
 | `request:failed`                  | `RequestFailedEvent`            | Any method on failure               |
 
 The `request:failed` payload extends `ErrorResponse` with a `source` field indicating which operation failed:
@@ -425,7 +466,7 @@ client.on("request:failed", (error) => {
 
 **Infinite loop protection** — If the same event is emitted more than 10 times within a single task (e.g. a listener on `cart:fetched` calling `getCart()`), further emissions are skipped and a warning is logged.
 
-## Error Handling
+## Error handling
 
 All methods return `ApiResult<T>`, a discriminated union:
 
@@ -474,13 +515,28 @@ import type {
   CustomEvents,
   AddPayload,
   LineItemPayload,
+  Section,
   CollectionProductsParams,
   CollectionSortBy,
   PredictiveSearchPayload,
   PredictiveSearchResourceType,
   PredictiveSearchField,
+  Cart,
+  Product,
 } from "siopa";
 ```
+
+`Cart` and `Product` are re-exported from [`@grafikr/shopify-typescript`](https://github.com/grafikr/shopify-typescript). Other response types (`Recommendations`, `Suggest`, `Collection`, cart endpoint types, etc.) come from that package’s type modules if you need them for annotations.
+
+## Development
+
+| Command        | Description        |
+| -------------- | ------------------ |
+| `pnpm build`   | Compile with `tsc` |
+| `pnpm test`    | Run Vitest         |
+| `pnpm lint`    | Run Oxlint         |
+| `pnpm fmt`     | Format with Oxfmt  |
+| `pnpm fmt:check` | Check formatting |
 
 ## License
 
