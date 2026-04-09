@@ -10,6 +10,8 @@ import type { Suggest } from "@grafikr/shopify-typescript/type/endpoints/Search"
 import type { CustomEvents } from "@grafikr/shopify-typescript/global/CustomEvents";
 import type { Collection } from "@grafikr/shopify-typescript/type/json/Search/Collection";
 
+export type { CustomEvents };
+
 type SiopaOptions = {
   rootUrl: string;
   currencyCode: string;
